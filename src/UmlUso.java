@@ -14,6 +14,16 @@ public class UmlUso {
 		//Constructor vacio
 	}
 	
+	public void ordenarUserCases(){
+		int contador = 60;
+		for(UsecaseUso u: listaCasos){
+			u.setPosy(contador);
+			u.setPosx(550);
+			contador +=200;
+		}
+	}
+	
+	/*
 	public void ordenarUserCases()
 	{
 		for(ConnectionUso c:listaConexiones) //se recorren las conexiones.
@@ -129,7 +139,7 @@ public class UmlUso {
 		}//este for busca pone al primer CU "uc1" primero y después va avanzando en la lista "siguientes" que son con los que se conecta dicho CU.
 		
 	}
-	
+	*/
 	public void OrdenarActores()
 	{
 		for(ConnectionUso c: listaConexiones)//se recorren las conexiones.
@@ -146,10 +156,15 @@ public class UmlUso {
 		
 		for(ActorUso a: listaActores)  //para todos los actores.
 		{
+<<<<<<< HEAD
 			if(a.getType().equals("primary")) //si es de tipo primario.
 				a.setPosx(0); //se setea el valor de la coordenada x (REVISAR VALOR).
+=======
+			if(a.getType() == "primary") //si es de tipo primario.
+				a.setPosx(10); //se setea el valor de la coordenada x (REVISAR VALOR).
+>>>>>>> origin/dev-lectorxml
 			else //si es del tipo secundario.
-				a.setPosx(300); //se setea el valor (REVISAR VALOR).
+				a.setPosx(900); //se setea el valor (REVISAR VALOR).
 		}
 		
 		int coordenadaEnY = 0; //valor auxiliar para coordenadaY.
