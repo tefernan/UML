@@ -87,13 +87,12 @@ public class CrearUC {
 		{
 			//Insertar ovalo
 			pone.drawImage(img,casos.get(i).getPosx(), casos.get(i).getPosy(), null);
-			
-			String[] parrafo = casos.get(i).getName().split(delims);
-			
+			pone.drawString(casos.get(i).getName(), casos.get(i).getPosx(), casos.get(i).getPosy());
+			//String[] parrafo = casos.get(i).getName().split(delims);
 			//Escribir texto
-			pone.drawString(parrafo[0], casos.get(i).getPosx()+30, casos.get(i).getPosy()+img.getHeight()/3);
+			/*pone.drawString(parrafo[0], casos.get(i).getPosx()+30, casos.get(i).getPosy()+img.getHeight()/3);
 			pone.drawString(parrafo[1], casos.get(i).getPosx()+20, casos.get(i).getPosy()+img.getHeight()/2);
-			pone.drawString(parrafo[2], casos.get(i).getPosx()+30, casos.get(i).getPosy()+img.getHeight()*2/3);
+			pone.drawString(parrafo[2], casos.get(i).getPosx()+30, casos.get(i).getPosy()+img.getHeight()*2/3);*/
 			
 		}
 	
