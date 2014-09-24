@@ -6,12 +6,13 @@ public class ActorUso extends CajaUso {
 	//Typo de actor (primario o secundario)
 	private String type;
 	//Conexiones que salen
-	private ArrayList<String> salen;
+	private ArrayList<String> salen = new ArrayList<String>(); ;
 	
 	//Constructor, llama al super y le agrega el tipo de actor
 	public ActorUso(String tipoCaja, String id, String name, String type) {
 		super(tipoCaja, id, name);
 		this.type = type;
+		
 	}
 	
 	//Agregar salidas desde el actor
