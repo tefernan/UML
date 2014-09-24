@@ -7,6 +7,11 @@ public abstract class CajaUso {
 	protected String tipoCaja;
 	protected String id;
 	protected String name;
+	
+	//Coordenadas de la caja
+	protected int posx = 0;
+	protected int posy = 0;
+	
 	//Lista de las conexiones de cada caja
 	protected ArrayList<ConnectionUso> conexiones = new ArrayList<ConnectionUso>();
 	
@@ -41,5 +46,19 @@ public abstract class CajaUso {
 	public void setTipoCaja(String tipoCaja) {
 		this.tipoCaja = tipoCaja;
 	}
+
+	public int getPosx() {
+		return posx;
+	}
+	public void setPosx(int posx) {
+		this.posx = posx;
+	}
+	public int getPosy() {
+		return posy;
+	}
+	public void setPosy(int posy) {
+		this.posy = posy;
+	}
+
 
 }

@@ -10,12 +10,10 @@ public class ConnectionUso {
 	private CajaUso hacia;
 	
 	//Constructor
-	public ConnectionUso(String type, String from, String to, CajaUso desde, CajaUso hacia) {
+	public ConnectionUso(String type, String from, String to) {
 		this.type = type;
 		this.from = from;
 		this.to = to;
-		this.desde = desde;
-		this.hacia = hacia;
 	}
 
 
@@ -37,6 +35,8 @@ public class ConnectionUso {
 	public void setTo(String to) {
 		this.to = to;
 	}
+	
+	//Setters cajas de uso
 	public CajaUso getDesde() {
 		return desde;
 	}

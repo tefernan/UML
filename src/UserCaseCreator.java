@@ -20,7 +20,9 @@ public class UserCaseCreator {
 	}
 	
 	//Metodo que lee el XML, lo va parseando y creando los objetos del diagrama
-	public void parseXML(){
+	public UmlUso parseXML(){
+		UmlUso diag = new UmlUso();
+		
 		try{
 			//Crea un documento con el XML
 			File fXmlFile = new File(urlArchivo);
@@ -30,7 +32,9 @@ public class UserCaseCreator {
 			doc.getDocumentElement().normalize();
 			
 			//Imprime la raiz
-			System.out.println("Elemento raiz: "+ doc.getDocumentElement().getNodeName());
+			String nombre = doc.getDocumentElement().getNodeName();
+			diag.setNombreDiagrama(nombre);
+			//System.out.println("Elemento raiz: "+  diag.getNombreDiagrama());
 			
 			
 			//-----PROCESADO DE ACTORES
@@ -47,11 +51,23 @@ public class UserCaseCreator {
 					Node nodoActor = listaActor.item(temp2);
 					
 					if(nodoActor.getNodeType() == Node.ELEMENT_NODE){
-						Element actor = (Element) nodoActor;
+						Element actorElement = (Element) nodoActor;
+						
+						//-----------------------
+						String tipoCaja = "actor";
+						String id = actorElement.getAttribute("id");
+						String name = actorElement.getAttribute("name");
+						String type = actorElement.getAttribute("type");
+						ActorUso actor = new ActorUso(tipoCaja, id, name, type);
+						diag.addActor(actor);
+						
+						//-----------------------
+						/*
 						System.out.println("---------ACTOR---------");
 						System.out.println("Tipo de Actor :" + actor.getAttribute("type"));
 						System.out.println("Nombre :" + actor.getAttribute("name"));
 						System.out.println("id :" + actor.getAttribute("id"));
+						*/
 					}
 				}
 				
@@ -71,10 +87,22 @@ public class UserCaseCreator {
 					Node nodoUseCase = listaUseCase.item(temp2);
 					
 					if(nodoUseCase.getNodeType() == Node.ELEMENT_NODE){
-						Element useCase = (Element) nodoUseCase;
+						Element useCaseElement = (Element) nodoUseCase;
+						
+						//-----------------------
+						String tipoCaja = "caso";
+						String id = useCaseElement.getAttribute("id");
+						String name = useCaseElement.getAttribute("name");
+						UsecaseUso caso = new UsecaseUso(tipoCaja, id, name);
+						diag.addCaso(caso);
+						
+						//-----------------------
+						
+						/*
 						System.out.println("---------Use Case---------");
 						System.out.println("Nombre del caso :" + useCase.getAttribute("name"));
 						System.out.println("id :" + useCase.getAttribute("id"));
+						*/
 					}
 				}
 				
@@ -94,11 +122,24 @@ public class UserCaseCreator {
 					Node nodoConnection = listaConnection.item(temp2);
 					
 					if(nodoConnection.getNodeType() == Node.ELEMENT_NODE){
-						Element useCase = (Element) nodoConnection;
+						Element useCaseElement = (Element) nodoConnection;
+						
+						//-----------------------
+						String type = useCaseElement.getAttribute("type");
+						String from = useCaseElement.getAttribute("from");
+						String to = useCaseElement.getAttribute("to");
+						
+						ConnectionUso conexion = new ConnectionUso(type, from, to);
+						diag.addConexion(conexion);
+						
+						//-----------------------
+						
+						/*
 						System.out.println("---------Connection---------");
 						System.out.println("Tipo de conexion :" + useCase.getAttribute("type"));
 						System.out.println("Desde :" + useCase.getAttribute("from"));
 						System.out.println("Hacia :" + useCase.getAttribute("to"));
+						*/
 					}
 				}
 				
@@ -110,6 +151,8 @@ public class UserCaseCreator {
 		catch(Exception e){
 			e.printStackTrace();
 		}
+		
+		return diag;
 		
 		
 	}
