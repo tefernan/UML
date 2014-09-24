@@ -1,0 +1,31 @@
+Backlog listo
+Cada entrega debe tener una ejecución
+TODO implementado
+Cambiar de opinión
+
+Backlog proyecto
+Backlog sprint
+En el GIT
+
+Anotar todos los userstory´s
+2 Sprint debugging
+
+
+1)XML y sale un PNG
+**XML no estandar
+2)Editor de texto + importante editor visual
+
+Sprint 1
+Elegir tipo de diagrama
+Cargar diagrama
+Generar diagrama
+
+
+Hacer diseños de interfaz grafica
+Buscar libreria para interfaz grafica
+
+refcardz.com design patterns
+
+
+Diagrama XML
+Se puede actualizar el diagrama estandar

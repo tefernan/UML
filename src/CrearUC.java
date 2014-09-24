@@ -87,7 +87,7 @@ public class CrearUC {
 		{
 			//Insertar ovalo
 			pone.drawImage(img,casos.get(i).getPosx(), casos.get(i).getPosy(), null);
-			pone.drawString(casos.get(i).getName(), casos.get(i).getPosx(), casos.get(i).getPosy());
+			pone.drawString(casos.get(i).getName(), casos.get(i).getPosx()+20, casos.get(i).getPosy()+img.getHeight()/2);
 			//String[] parrafo = casos.get(i).getName().split(delims);
 			//Escribir texto
 			/*pone.drawString(parrafo[0], casos.get(i).getPosx()+30, casos.get(i).getPosy()+img.getHeight()/3);
@@ -106,11 +106,63 @@ public class CrearUC {
 		Stroke stroke = new BasicStroke(6, BasicStroke.CAP_BUTT,
 				BasicStroke.JOIN_BEVEL, 0, new float[] { 1, 0 }, 0);
 		pone.setStroke(stroke);
-		/*aw = img.getWidth() / 2;
-		ah = img.getHeight() / 2;
-		pone.drawLine(aw, ah, aw + 300, ah);*/
 		
 	}
+	
+	public void dibujarFlecha()
+	   {
+	     double ang=0.0, angSep=0.0;
+	     double tx,ty;
+	     int dist=0;
+	     Point punto1=null,punto2=null;
+
+	     //defino dos puntos extremos
+	     punto1=new Point(15,300);
+	     punto2=new Point(85,500);
+
+	     //tamaño de la punta de la flecha
+	     dist=15;
+
+	     /* (la coordenadas de la ventana es al revez)
+	         calculo de la variacion de "x" y "y" para hallar el angulo
+	      **/
+
+	     ty=-(punto1.y-punto2.y)*1.0;
+	     tx=(punto1.x-punto2.x)*1.0;
+	     //angulo
+	     ang=Math.atan (ty/tx);
+
+	     if(tx<0)
+	     {// si tx es negativo aumentar 180 grados
+	        ang+=Math.PI;
+	     }
+
+	     //puntos de control para la punta
+	     //p1 y p2 son los puntos de salida
+	     Point p1=new Point(),p2=new Point(),punto=punto2;
+
+	     //angulo de separacion
+	     angSep=25.0;
+	    
+	     p1.x=(int)(punto.x+dist*Math.cos (ang-Math.toRadians (angSep)));
+	     p1.y=(int)(punto.y-dist*Math.sin (ang-Math.toRadians (angSep)));
+	     p2.x=(int)(punto.x+dist*Math.cos (ang+Math.toRadians (angSep)));
+	     p2.y=(int)(punto.y-dist*Math.sin (ang+Math.toRadians (angSep)));
+
+
+	     //dale color a la linea
+	     pone.setColor (Color.black);
+	     // grosor de la linea
+	     pone.setStroke (new BasicStroke(3.2f));
+	     //dibuja la linea de extremo a extremo
+	     pone.drawLine (punto1.x,punto1.y,punto.x,punto.y);
+	     //dibujar la punta
+	     pone.drawLine (p1.x,p1.y,punto.x,punto.y);
+	     pone.drawLine (p2.x,p2.y,punto.x,punto.y);    
+
+	   }
+	
+	
 
 	public void Finalizar() throws IOException{
 		ImageIO.write(bi, "PNG", new File(name+".PNG"));

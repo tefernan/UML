@@ -16,11 +16,12 @@ public class Principal {
 		}
 		
 		UML.ordenarUserCases();
-		UML.OrdenarActores();
+		//UML.OrdenarActores();
 		
 		CrearUC a= new CrearUC(UML.getNombreDiagrama(),UML);
 		a.CrearUsers();
 		a.CrearCasos();
+		a.dibujarFlecha();
 		a.Finalizar();
 
 	}
