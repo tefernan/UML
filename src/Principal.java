@@ -1,28 +1,43 @@
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
+
+import javax.swing.JFileChooser;
 
 public class Principal {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		
-		UserCaseCreator uc = new UserCaseCreator("usercase.xml");
+		System.out.println("Elija el archivo");
+		
+		//Elegir el archivo
+		JFileChooser fc = new JFileChooser();
+		File archivo = null;
+        if(JFileChooser.APPROVE_OPTION == fc.showOpenDialog(null)){
+            archivo= fc.getSelectedFile();
+        }
+        else {
+            System.out.println("No selecciono archivo");
+            System.exit(1);
+        }
+
+  
+		UserCaseCreator uc = new UserCaseCreator(archivo);
 		UmlUso UML = uc.parseXML();
 		
-		System.out.println("Nombre diagrama: "+  UML.getNombreDiagrama());
-		
-		for(UsecaseUso a: UML.getListaCasos()){
-			System.out.println(a.getName());
-		}
-		
 		UML.ordenarUserCases();
-		//UML.OrdenarActores();
+		UML.OrdenarActores();
 		
-		CrearUC a= new CrearUC(UML.getNombreDiagrama(),UML);
-		a.CrearUsers();
-		a.CrearCasos();
-		a.dibujarFlecha();
-		a.Finalizar();
+		
+		CrearUC diag= new CrearUC(UML.getNombreDiagrama(),UML);
+	
+		
+		diag.CrearUsers();
+		diag.CrearCasos();
+		diag.CrearConexiones();
+		diag.Finalizar();
+		
 
 	}
 	

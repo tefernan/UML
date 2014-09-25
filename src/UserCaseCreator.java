@@ -13,10 +13,11 @@ public class UserCaseCreator {
 	
 	//URL de donde esta guardado el archivo XML de Casos de Uso
 	String urlArchivo;
+	File archivo;
 	
 	//Constructor, que le pasa la url
-	public UserCaseCreator(String dir){
-		urlArchivo = dir;
+	public UserCaseCreator(File dir){
+		archivo = dir;
 	}
 	
 	//Metodo que lee el XML, lo va parseando y creando los objetos del diagrama
@@ -25,7 +26,7 @@ public class UserCaseCreator {
 		
 		try{
 			//Crea un documento con el XML
-			File fXmlFile = new File(urlArchivo);
+			File fXmlFile = archivo;
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(fXmlFile);
@@ -55,9 +56,9 @@ public class UserCaseCreator {
 						
 						//-----------------------
 						String tipoCaja = "actor";
-						String id = actorElement.getAttribute("id");
+						String id = actorElement.getAttribute("id").replaceAll("\\s","");
 						String name = actorElement.getAttribute("name");
-						String type = actorElement.getAttribute("type");
+						String type = actorElement.getAttribute("type").replaceAll("\\s","");
 						ActorUso actor = new ActorUso(tipoCaja, id, name, type);
 						diag.addActor(actor);
 						
@@ -91,7 +92,7 @@ public class UserCaseCreator {
 						
 						//-----------------------
 						String tipoCaja = "caso";
-						String id = useCaseElement.getAttribute("id");
+						String id = useCaseElement.getAttribute("id").replaceAll("\\s","");
 						String name = useCaseElement.getAttribute("name");
 						UsecaseUso caso = new UsecaseUso(tipoCaja, id, name);
 						diag.addCaso(caso);
@@ -125,9 +126,9 @@ public class UserCaseCreator {
 						Element useCaseElement = (Element) nodoConnection;
 						
 						//-----------------------
-						String type = useCaseElement.getAttribute("type");
-						String from = useCaseElement.getAttribute("from");
-						String to = useCaseElement.getAttribute("to");
+						String type = useCaseElement.getAttribute("type").replaceAll("\\s","");
+						String from = useCaseElement.getAttribute("from").replaceAll("\\s","");
+						String to = useCaseElement.getAttribute("to").replaceAll("\\s","");
 						
 						ConnectionUso conexion = new ConnectionUso(type, from, to);
 						diag.addConexion(conexion);
@@ -151,10 +152,38 @@ public class UserCaseCreator {
 		catch(Exception e){
 			e.printStackTrace();
 		}
-		
+		diag = asignarEntradasSalidas(diag);
 		return diag;
 		
 		
+	}
+	
+	public UmlUso asignarEntradasSalidas(UmlUso d){
+		
+		UmlUso diag = d;
+		for(ActorUso a: diag.getListaActores()){
+			for(ConnectionUso c: diag.getListaConexiones()){
+				if(a.getId().equals(c.getFrom())){
+					a.addSalen(c.getTo());
+				}
+			}
+		}
+		
+		for(UsecaseUso u: diag.getListaCasos()){
+			for(ConnectionUso c: diag.getListaConexiones()){
+				if(u.getId().equals(c.getFrom())){
+					u.addSalen(c.getTo());
+					u.addUniones(c.getTo());
+				}
+				if(u.getId().equals(c.getTo())){
+					u.addEntran(c.getFrom());
+					u.addUniones(c.getFrom());
+				}
+			}
+		}
+		
+		
+		return diag;
 	}
 	
 	

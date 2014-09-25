@@ -1,7 +1,9 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+
 import javax.imageio.ImageIO;
+
 import java.util.*;
 
 public class CrearUC {
@@ -87,29 +89,21 @@ public class CrearUC {
 		{
 			//Insertar ovalo
 			pone.drawImage(img,casos.get(i).getPosx(), casos.get(i).getPosy(), null);
-			pone.drawString(casos.get(i).getName(), casos.get(i).getPosx()+20, casos.get(i).getPosy()+img.getHeight()/2);
+			
+			pone.drawString(casos.get(i).getName(),casos.get(i).getPosx()+20,casos.get(i).getPosy()+img.getHeight()/2);
 			//String[] parrafo = casos.get(i).getName().split(delims);
+			
 			//Escribir texto
 			/*pone.drawString(parrafo[0], casos.get(i).getPosx()+30, casos.get(i).getPosy()+img.getHeight()/3);
 			pone.drawString(parrafo[1], casos.get(i).getPosx()+20, casos.get(i).getPosy()+img.getHeight()/2);
-			pone.drawString(parrafo[2], casos.get(i).getPosx()+30, casos.get(i).getPosy()+img.getHeight()*2/3);*/
-			
+			pone.drawString(parrafo[2], casos.get(i).getPosx()+30, casos.get(i).getPosy()+img.getHeight()*2/3);
+			*/
 		}
 	
 		
 	}
 	
-	public void CrearConexiones()throws IOException{
-		
-		//Ojo con los 4 tipos
-		pone.setColor(Color.black);
-		Stroke stroke = new BasicStroke(6, BasicStroke.CAP_BUTT,
-				BasicStroke.JOIN_BEVEL, 0, new float[] { 1, 0 }, 0);
-		pone.setStroke(stroke);
-		
-	}
-	
-	public void dibujarFlecha()
+	public void dibujarFlecha(int p1x, int p1y, int p2x, int p2y)
 	   {
 	     double ang=0.0, angSep=0.0;
 	     double tx,ty;
@@ -117,8 +111,8 @@ public class CrearUC {
 	     Point punto1=null,punto2=null;
 
 	     //defino dos puntos extremos
-	     punto1=new Point(15,300);
-	     punto2=new Point(85,500);
+	     punto1=new Point(p1x,p1y);
+	     punto2=new Point(p2x,p2y);
 
 	     //tamaño de la punta de la flecha
 	     dist=15;
@@ -149,7 +143,6 @@ public class CrearUC {
 	     p2.x=(int)(punto.x+dist*Math.cos (ang+Math.toRadians (angSep)));
 	     p2.y=(int)(punto.y-dist*Math.sin (ang+Math.toRadians (angSep)));
 
-
 	     //dale color a la linea
 	     pone.setColor (Color.black);
 	     // grosor de la linea
@@ -157,12 +150,46 @@ public class CrearUC {
 	     //dibuja la linea de extremo a extremo
 	     pone.drawLine (punto1.x,punto1.y,punto.x,punto.y);
 	     //dibujar la punta
-	     pone.drawLine (p1.x,p1.y,punto.x,punto.y);
-	     pone.drawLine (p2.x,p2.y,punto.x,punto.y);    
+	     //pone.drawLine (p1.x,p1.y,punto.x,punto.y);
+	     //pone.drawLine (p2.x,p2.y,punto.x,punto.y);    
 
 	   }
 	
-	
+	public void CrearConexiones()throws IOException{
+		
+		for(ActorUso a: actores){
+			for(String s: a.getSalen()){
+				System.out.println(s);
+				int x1 = 0;
+				int y1 = 0;
+				int x2 = 0;
+				int y2 = 0;
+				
+				int xCaso = 0;
+				int yCaso = 0;
+				for(UsecaseUso u: casos){
+					if(u.getId().equals(s)){
+						xCaso = u.getPosx();
+						yCaso = u.getPosy();
+					}
+				}
+				
+				x1 = a.getPosx() + 36;
+				y1 = a.getPosy() + 63;
+				
+				if(a.getType().equals("primary")){
+					x2 = xCaso;
+				}
+				else{
+					x2 = xCaso + 173;
+				}
+				y2 = yCaso+63;
+				dibujarFlecha(x1, y1, x2, y2);
+			}
+			
+		}
+		
+	}
 
 	public void Finalizar() throws IOException{
 		ImageIO.write(bi, "PNG", new File(name+".PNG"));

@@ -15,12 +15,38 @@ public class UmlUso {
 	}
 	
 	public void ordenarUserCases(){
-		int contador = 60;
+		int contador = 30;
 		for(UsecaseUso u: listaCasos){
 			u.setPosy(contador);
-			u.setPosx(550);
+			u.setPosx(500);
 			contador +=200;
 		}
+	}
+	
+	public void OrdenarActores(){
+		
+		int contadorp=30,contadors=30;
+		
+		for(ActorUso u: listaActores){
+			
+			if(u.getType().equals("primary"))
+			{
+				u.setPosy(contadorp);
+				u.setPosx(10);
+				contadorp +=200;
+			
+			}
+			
+			else
+			{
+				u.setPosy(contadors);
+				u.setPosx(1100);
+				contadors +=200;
+				
+			}
+
+		}
+		
 	}
 	
 	/*
@@ -28,14 +54,14 @@ public class UmlUso {
 	{
 		for(ConnectionUso c:listaConexiones) //se recorren las conexiones.
 		{
-			if(! c.getType().equals("basic")) //se buscan sólo las conexiones que son de casos de uso(CU).
+			if(c.getType() != "basic") //se buscan sólo las conexiones que son de casos de uso(CU).
 			{
 				for(UsecaseUso u:listaCasos) //para cada caso de uso.
 				{
-					if(c.getFrom().equals(u.getId())) //si la conexión sale desde dicho CU ("from").
+					if(c.getFrom() == u.getId()) //si la conexión sale desde dicho CU ("from").
 						u.addSalen(c.getTo()); //se agrega a la lista "salen".
 					
-					if(c.getTo().equals(u.getId())) //si la conexión llega hasta dicho CU ("to").
+					if(c.getTo() == u.getId()) //si la conexión llega hasta dicho CU ("to").
 						u.addEntran(c.getFrom()); //se agrega a la lista "entran".
 				}
 			}
@@ -57,7 +83,7 @@ public class UmlUso {
 			if(asignados.size() < listaCasos.size()) //si todavía no se ha asignado coordenada a todos los CU.
 			{
 				//---------------------------------------------------------REVISAR!!!!
-				if(u.getId().equals("uc1")) //si es el primero
+				if(u.getId() == "uc1") //si es el primero
 				{
 					u.setPosx(coordenadaEnX);//setea los valores iniciales.
 					u.setPosy(coordenadaEnY);
@@ -85,7 +111,7 @@ public class UmlUso {
 				{
 					for(UsecaseUso uc: listaCasos) //se busca en los CU
 					{
-						if(str.equals(uc.getId())) //si coincide el id
+						if(str == uc.getId()) //si coincide el id
 						{
 							uc.setPosy(coordenadaEnY); //se setea el valor de la coordenada Y.
 						}
@@ -128,7 +154,7 @@ public class UmlUso {
 				{
 					for(String s: siguientes)
 					{
-						if(st.equals(s))
+						if(st == s)
 							siguientes.remove(st); //elimina de la lista "siguiente" los CU que ya han sido asignados.
 					}
 				}
@@ -139,16 +165,16 @@ public class UmlUso {
 		}//este for busca pone al primer CU "uc1" primero y después va avanzando en la lista "siguientes" que son con los que se conecta dicho CU.
 		
 	}
-	*/
+	
 	public void OrdenarActores()
 	{
 		for(ConnectionUso c: listaConexiones)//se recorren las conexiones.
 		{
-			if(c.getType().equals("basic")) //sólo importan las que unen actores con CU.
+			if(c.getType() == "basic") //sólo importan las que unen actores con CU.
 			{
 				for(ActorUso a: listaActores) //para cada actor.
 				{
-					if(c.getFrom().equals(a.getId()))//si la conexión sale desde él.
+					if(c.getFrom() == a.getId())//si la conexión sale desde él.
 						a.addSalen(c.getTo());//se agregra el CU a "salen".
 				}
 			}
@@ -156,15 +182,10 @@ public class UmlUso {
 		
 		for(ActorUso a: listaActores)  //para todos los actores.
 		{
-<<<<<<< HEAD
-			if(a.getType().equals("primary")) //si es de tipo primario.
-				a.setPosx(0); //se setea el valor de la coordenada x (REVISAR VALOR).
-=======
 			if(a.getType() == "primary") //si es de tipo primario.
-				a.setPosx(10); //se setea el valor de la coordenada x (REVISAR VALOR).
->>>>>>> origin/dev-lectorxml
+				a.setPosx(0); //se setea el valor de la coordenada x (REVISAR VALOR).
 			else //si es del tipo secundario.
-				a.setPosx(900); //se setea el valor (REVISAR VALOR).
+				a.setPosx(300); //se setea el valor (REVISAR VALOR).
 		}
 		
 		int coordenadaEnY = 0; //valor auxiliar para coordenadaY.
@@ -176,7 +197,7 @@ public class UmlUso {
 			{
 				for(UsecaseUso u: listaCasos)//para todos los CU.
 				{
-					if(s.equals(u.getId()) ) //si el CU es igual al que se conecta.
+					if(s == u.getId()) //si el CU es igual al que se conecta.
 					{
 						coordenadaEnY += u.getPosy();//se agrega la coordenada en Y para después sacar el promedio.
 						contador++;//se aumenta en uno el contador.
@@ -206,14 +227,14 @@ public class UmlUso {
 			
 		}
 	}
-	
+	*/
 	
 	public boolean ComprobarSiExiste(ArrayList<String> lista, String elemento)
 	{
 		boolean estaRepetido = false;
 		for(String s : lista)
 		{
-			if(s.equals(elemento))
+			if(s == elemento)
 				estaRepetido = true;
 		}
 		
