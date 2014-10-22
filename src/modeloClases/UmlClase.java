@@ -10,6 +10,8 @@ public class UmlClase {
 	private ArrayList<String> listaColocadosDC;
 	
 	public UmlClase(){
+		System.out.println("a");
+		System.out.println("SSSHS");
 		listaClases = new ArrayList<Clase>();
 		listaConexiones = new ArrayList<ConnectionClase>();
 		listaColocadosDC = new ArrayList<String>();
@@ -17,6 +19,7 @@ public class UmlClase {
 	
 	public void ordenarDiagramaClases()
 	{
+		System.out.print("a");
 		String primero = entregarClaseConMasConexiones(listaClases);
 		ArrayList<Clase> clasesAuxiliar = new ArrayList<Clase>();
 		

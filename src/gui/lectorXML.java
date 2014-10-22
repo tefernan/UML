@@ -96,7 +96,7 @@ public class lectorXML {
 							
 							metodo += "):" + typeMet;
 							
-							System.out.println(metodo);
+						    System.out.println(metodo);
 							clase.AgregarMetodos(metodo);
 						}
 					}
@@ -135,6 +135,9 @@ public class lectorXML {
 			e.printStackTrace();
 		}
 		diag = asignarEntradasSalidasClases(diag);
+		System.out.println("asdasdasd");
+		System.out.println(diag.getNombreDiagrama());
+		System.out.println("asdasdasd");
 		return diag;
 		
 	}
