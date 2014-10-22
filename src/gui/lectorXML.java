@@ -42,6 +42,7 @@ public class lectorXML {
 			
 			diag.setNombreDiagrama(nombre);
 			
+			
 			//empieza a leer el xml. 
 			//CLASES-----
 			NodeList nListClases= doc.getElementsByTagName("class");
@@ -96,14 +97,31 @@ public class lectorXML {
 							
 							metodo += "):" + typeMet;
 							
-						    System.out.println(metodo);
+							//System.out.println(metodo);
 							clase.AgregarMetodos(metodo);
 						}
 					}
 					
+
+					
 					diag.addClases(clase);
 				}
 			}
+			
+			/*
+			
+			for(Clase c:diag.getListaClases()){
+				System.out.println(c.getNombre());
+				for(String b:c.getAtributos()){
+					System.out.println(b);
+				}
+				for(String b:c.getMetodos()){
+					System.out.println(b);
+				}
+			}
+			
+			Thread.sleep(1000);
+			*/
 			
 			//CONEXIONES ------
 			NodeList nListConnections = doc.getElementsByTagName("connections");
@@ -130,14 +148,39 @@ public class lectorXML {
 				
 			}
 			
-		} 
+		}
 		catch(Exception e){
 			e.printStackTrace();
 		}
+		
 		diag = asignarEntradasSalidasClases(diag);
-		System.out.println("asdasdasd");
-		System.out.println(diag.getNombreDiagrama());
-		System.out.println("asdasdasd");
+		
+		/*
+		for(Clase c:diag.getListaClases()){
+			System.out.println(c.getNombre());
+			for(String b:c.getAtributos()){
+				System.out.println(b);
+			}
+			for(String b:c.getMetodos()){
+				System.out.println(b);
+			}
+		}
+		
+		for(ConnectionClase s:diag.getListaConexiones()){
+			System.out.println(s.getFrom());
+			System.out.println(s.getTo());
+			System.out.println(s.getType());
+		}
+		
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
+		
+		
 		return diag;
 		
 	}
@@ -290,6 +333,6 @@ public class lectorXML {
 			}
 		}
 		
-		return null;
+		return diag;
 	}
 }

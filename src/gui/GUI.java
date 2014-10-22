@@ -252,7 +252,7 @@ public class GUI {
 	//Lo que hace el boton guardar. Guarda el texto en un archivo
 	public ActionListener listenerBotonGuardar(){
 		return new ActionListener() {
-			
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				try{
 					JFileChooser fc = new JFileChooser();
@@ -281,7 +281,7 @@ public class GUI {
 	//lo que hace el boton cargar. Carga un xml en el textarea
 	public ActionListener listenerBotonCargar(){
 		return new ActionListener() {
-			
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				//Filechooser, para elegir el archivo
 				try{
@@ -311,7 +311,7 @@ public class GUI {
 	//Lo que hace el boton 4
 	public ActionListener listenerBotonImagen(){
 		return new ActionListener() {
-			
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				//JOptionPane.showMessageDialog(frame, "Wasaaaap");

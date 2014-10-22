@@ -28,13 +28,21 @@ public class CrearDC {
 	
 		this.clases=u.getListaClases();
 		name = u.getNombreDiagrama();
-		
+
+
 		bi = new BufferedImage(1000, 1000,
 				BufferedImage.TYPE_INT_ARGB);
 		pone = bi.createGraphics();
+	
+
 		pone.setColor(Color.white);
 		pone.fillRect(0, 0, 1000, 1000);
 		pone.setStroke (new BasicStroke(3.2f));
+		
+		pone.setColor(Color.black);
+		font = new Font("Serif", Font.BOLD, 30);
+		pone.setFont(font);
+		pone.drawString(name,500,20);
 
 	}
 	
@@ -50,6 +58,7 @@ public class CrearDC {
 	
 	public void CrearAtributos()
 	{
+		
 		
 	}
 		
@@ -71,7 +80,7 @@ public class CrearDC {
 		
 			//Creo el Rectangulo
 			pone.setColor(Color.BLACK);
-			pone.drawRect(posx, posy, auxiliar.getAncho(), auxiliar.getAlto());
+			pone.drawRect(posx, posy, auxiliar.getAncho()+10, auxiliar.getAlto());
 
 
 			CrearNombre();
@@ -99,7 +108,7 @@ public class CrearDC {
 			pone.setFont(font);
 			for(int k = 0; k < auxiliar.getMetodos().size(); k++)
 			{
-				pone.drawString(auxiliar.getMetodos().get(k),posx+3,auxy+75+k*25);
+				pone.drawString(auxiliar.getMetodos().get(k),posx+3,auxy+55+k*25);
 				auxy=posy+50+k*25;				
 			}
 			
@@ -111,6 +120,10 @@ public class CrearDC {
 
 	public void Finalizar() throws IOException{
 		ImageIO.write(bi, "PNG", new File("DiagramaClases.PNG"));
+	}
+	
+	public void Finalizar(File dir) throws IOException{
+		ImageIO.write(bi, "PNG", dir);
 	}
 	
 	public ImageIcon FinalizarIcon(){

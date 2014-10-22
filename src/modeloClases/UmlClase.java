@@ -10,8 +10,6 @@ public class UmlClase {
 	private ArrayList<String> listaColocadosDC;
 	
 	public UmlClase(){
-		System.out.println("a");
-		System.out.println("SSSHS");
 		listaClases = new ArrayList<Clase>();
 		listaConexiones = new ArrayList<ConnectionClase>();
 		listaColocadosDC = new ArrayList<String>();
@@ -19,13 +17,23 @@ public class UmlClase {
 	
 	public void ordenarDiagramaClases()
 	{
-		System.out.print("a");
+		int cordX = 100;
+		int cordY = 60;
+		
+		for(Clase c: listaClases){
+			c.setPosy(cordY);
+			c.setPosx(cordX);
+			int alto = c.getAlto() + 20;
+			cordY += alto;
+		}
+		
+		/*
 		String primero = entregarClaseConMasConexiones(listaClases);
 		ArrayList<Clase> clasesAuxiliar = new ArrayList<Clase>();
 		
 		for(Clase c: listaClases)
 		{ clasesAuxiliar.add(c);}
-		
+		int indexBorrar = 0;
 		for(Clase c: clasesAuxiliar) 
 		{
 			if(primero.equals(c.getId())) //ordena el primero.
@@ -33,11 +41,20 @@ public class UmlClase {
 				c.setPosx(250); //REVISAR (tiene que quedar al medio).
 				c.setPosy(250);
 				listaColocadosDC.add(c.getId());
-				clasesAuxiliar.remove(c);
+				indexBorrar = clasesAuxiliar.indexOf(c);
+				//clasesAuxiliar.remove(c);
 			}
 		}
 		
-		int totalPorLado = clasesAuxiliar.size()/4;
+		clasesAuxiliar.remove(indexBorrar);
+		
+		//int totalPorLado = clasesAuxiliar.size()/4;
+		
+		double sizeDec = ((double)clasesAuxiliar.size())/(4);
+		int totalPorLado = (int)Math.ceil(sizeDec);
+		
+		System.out.println(totalPorLado);
+		
 		ArrayList<Clase> derecha = new ArrayList<Clase>();
 		ArrayList<Clase> izquierda = new ArrayList<Clase>();
 		ArrayList<Clase> arriba = new ArrayList<Clase>();
@@ -52,7 +69,7 @@ public class UmlClase {
 				contador++; 
 			}
 			
-			if(contador > totalPorLado - 1) //ejemplo: 3
+			else if(contador > totalPorLado - 1) //ejemplo: 3
 			{
 				if(contador < 2*totalPorLado) //ejemplo: 8
 				{
@@ -61,7 +78,7 @@ public class UmlClase {
 				}
 			}
 			
-			if(contador > 2*totalPorLado - 1) //ejemplo: 7
+			else if(contador > 2*totalPorLado - 1) //ejemplo: 7
 			{
 				if(contador < 3*totalPorLado) //ejemplo: 12
 				{
@@ -70,7 +87,7 @@ public class UmlClase {
 				}
 			}
 			
-			if(contador > 3*totalPorLado - 1) //ejemplo: 11
+			else if(contador > 3*totalPorLado - 1) //ejemplo: 11
 			{
 				derecha.add(c);
 				contador++;
@@ -79,6 +96,25 @@ public class UmlClase {
 			if(contador == clasesAuxiliar.size())
 			{return;}
 		}
+		
+		System.out.println("cosas");
+		for(Clase c:arriba){
+			System.out.println("arriba");
+			System.out.println(c.getNombre());
+		}
+		for(Clase c:derecha){
+			System.out.println("derecha");
+			System.out.println(c.getNombre());
+		}
+		for(Clase c:izquierda){
+			System.out.println("izquierda");
+			System.out.println(c.getNombre());
+		}
+		for(Clase c:abajo){
+			System.out.println("abajo");
+			System.out.println(c.getNombre());
+		}
+		
 		
 		int coordx_arriba = 0;
 		int coordy_arriba = 0;
@@ -114,7 +150,7 @@ public class UmlClase {
 			c.setPosx(coordx_derecha);
 			c.setPosy(coordy_derecha);
 			coordy_derecha += c.getAlto() + 20;
-		}	
+		}	*/
 	}
 	
 	public String entregarClaseConMasConexiones(ArrayList<Clase> listaClases)

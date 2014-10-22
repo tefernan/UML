@@ -52,6 +52,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import modeloCasos.CrearCaso;
 import modeloCasos.UmlCaso;
+import modeloClases.Clase;
+import modeloClases.ConnectionClase;
 import modeloClases.CrearDC;
 import modeloClases.UmlClase;
 
@@ -170,16 +172,19 @@ public class GUI2 {
 		
 		texto.getDocument().addDocumentListener(new DocumentListener() {
 			
+			@Override
 			public void removeUpdate(DocumentEvent e) {
 				// TODO Auto-generated method stub
 				estaGuardado = false;
 			}
 			
+			@Override
 			public void insertUpdate(DocumentEvent e) {
 				// TODO Auto-generated method stub
 				estaGuardado = false;
 			}
 			
+			@Override
 			public void changedUpdate(DocumentEvent e) {
 				// TODO Auto-generated method stub
 				estaGuardado = false;
@@ -260,6 +265,7 @@ public class GUI2 {
 	private ActionListener listenerbotonImagen() {
 		return new ActionListener() {
 			
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				int index = opciones.getSelectedIndex();
@@ -278,6 +284,7 @@ public class GUI2 {
 
 	private ActionListener listenerBotonAbrir() {
 		return new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				//Filechooser, para elegir el archivo
 				try{
@@ -291,6 +298,8 @@ public class GUI2 {
 		        		BufferedReader br = new BufferedReader(lector);
 		        		//añade el contenido al textarea, borrando lo anterior
 		        		texto.read(br, null);
+		        		texto.setText(texto.getText().replace("Â", " ")); //reemplazar caracter raro (ascii 194)
+		        		texto.setText(texto.getText().replace(" ", " ")); //reemplazar caracter raro (ascii 160)
 		        		br.close();
 		        		lector.close();
 		        	
@@ -308,6 +317,7 @@ public class GUI2 {
 
 	private ActionListener listenerBotonGuardarComo() {
 		return new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				try{
 					JFileChooser fc = new JFileChooser();
@@ -367,6 +377,7 @@ public class GUI2 {
 
 	private ActionListener listenerBotonGuardar() {
 		return new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				try{
 					if(archivoGuardado == null){
@@ -437,26 +448,31 @@ public class GUI2 {
 		
 		uml.ordenarDiagramaClases();
 		
-		CrearDC diag = new CrearDC(uml);
-		
-		/*
 		try{
+			CrearDC diag = new CrearDC(uml);
 			diag.CrearClase();
+			
+			JFileChooser fc = new JFileChooser();
+			fc.setSelectedFile(new File("diagramaClases.png"));
+			if(JFileChooser.APPROVE_OPTION == fc.showSaveDialog(null)){
+				File ubicacion = fc.getSelectedFile();
+				diag.Finalizar(ubicacion);
+			}
+			
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		*/
+		
 	}
 	
 	public void generarClaseEnTab(){
-		
 		String t = texto.getText();
 		t = t.replace(" ", " "); //reemplazar caracter raro (ascii 160)
 		UmlClase uml = lector.leerXMLClase(t);
-		System.out.println("--------------------------");
-		System.out.println(uml.getNombreDiagrama());
-		System.out.println(uml.getListaClases().toString());
-		System.out.println("--------------------------");
-		uml.ordenarDiagramaClases();
 		
+		uml.ordenarDiagramaClases();
+
 		CrearDC diag = new CrearDC(uml);
 		
 		
