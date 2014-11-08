@@ -1,7 +1,6 @@
 <UseCaseDiagram name = "Content Management System">
 	<actors>
 		<actor type = "primary" id = "a1" name = "Administrator" />
-		<actor type = "primary" id = "a1" name = "Gerente" />
 		<actor type = "secondary" id = "a2" name = "Author Credentials Database"/>
 	</actors>
 	<usecases>
