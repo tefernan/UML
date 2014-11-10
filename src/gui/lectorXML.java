@@ -195,9 +195,15 @@ public class lectorXML {
 			Document doc = dBuilder.parse(new InputSource(new StringReader(texto)));
 			
 			doc.getDocumentElement().normalize();
-			String nombre = doc.getDocumentElement().getNodeName();
 			
+			//Obtengo nombre del diagrama de Caso
+			NodeList nam = doc.getElementsByTagName("UseCaseDiagram");
+			Node na= nam.item(0);
+			Element nameElement = (Element) na;
+			String nombre = nameElement.getAttribute("name");
 			diag.setNombreDiagrama(nombre);
+			
+			
 			//System.out.println("Elemento raiz: "+  diag.getNombreDiagrama());
 			
 			

@@ -172,19 +172,16 @@ public class GUI2 {
 		
 		texto.getDocument().addDocumentListener(new DocumentListener() {
 			
-			@Override
 			public void removeUpdate(DocumentEvent e) {
 				// TODO Auto-generated method stub
 				estaGuardado = false;
 			}
 			
-			@Override
 			public void insertUpdate(DocumentEvent e) {
 				// TODO Auto-generated method stub
 				estaGuardado = false;
 			}
 			
-			@Override
 			public void changedUpdate(DocumentEvent e) {
 				// TODO Auto-generated method stub
 				estaGuardado = false;
@@ -265,7 +262,7 @@ public class GUI2 {
 	private ActionListener listenerbotonImagen() {
 		return new ActionListener() {
 			
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				int index = opciones.getSelectedIndex();
@@ -284,7 +281,7 @@ public class GUI2 {
 
 	private ActionListener listenerBotonAbrir() {
 		return new ActionListener() {
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				//Filechooser, para elegir el archivo
 				try{
@@ -317,7 +314,7 @@ public class GUI2 {
 
 	private ActionListener listenerBotonGuardarComo() {
 		return new ActionListener() {
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				try{
 					JFileChooser fc = new JFileChooser();
@@ -377,7 +374,6 @@ public class GUI2 {
 
 	private ActionListener listenerBotonGuardar() {
 		return new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				try{
 					if(archivoGuardado == null){

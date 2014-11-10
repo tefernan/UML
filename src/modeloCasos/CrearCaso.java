@@ -1,3 +1,4 @@
+
 package modeloCasos;
 
 import java.awt.BasicStroke;
@@ -5,6 +6,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +25,7 @@ public class CrearCaso {
 	private BufferedImage img;
 	private ArrayList<ActorCaso> actores;
 	private ArrayList<UsecaseCaso> casos;
+	private ArrayList<ConnectionCaso> conexiones;
 	private File actor = new File("res/actor.PNG");
 	private File ovalo = new File("res/ovalo.PNG");
 
@@ -31,6 +34,7 @@ public class CrearCaso {
 		this.name = nombre;
 		this.actores=U.getListaActores();
 		this.casos=U.getListaCasos();
+		this.conexiones=U.getListaConexiones();
 		
 		//Propiedades imagen png
 		ancho=1300;
@@ -41,8 +45,6 @@ public class CrearCaso {
 		pone = bi.createGraphics();
 		pone.setColor(Color.white);
 		pone.fillRect(0, 0, ancho, alto);
-		/*pone.setColor(Color.gray);
-		pone.fillRect(300, 30, ancho-600, alto-40);*/
 		pone.setColor(Color.black);
 		pone.setFont(font);
 		pone.drawString(nombre,ancho*2/5,25);
@@ -144,7 +146,7 @@ public class CrearCaso {
 		
 	}
 	
-	public void dibujarFlecha(int p1x, int p1y, int p2x, int p2y)
+	public void dibujarUnion(int p1x, int p1y, int p2x, int p2y, String tipo)
 	   {
 	     double ang=0.0, angSep=0.0;
 	     double tx,ty;
@@ -156,9 +158,9 @@ public class CrearCaso {
 	     punto2=new Point(p2x,p2y);
 
 	     //tamaño de la punta de la flecha
-	     dist=15;
+	     dist=20;
 
-	     /* (la coordenadas de la ventana es al revez)
+	     /* (la coordenadas de la ventana es al reves)
 	         calculo de la variacion de "x" y "y" para hallar el angulo
 	      **/
 
@@ -183,50 +185,157 @@ public class CrearCaso {
 	     p1.y=(int)(punto.y-dist*Math.sin (ang-Math.toRadians (angSep)));
 	     p2.x=(int)(punto.x+dist*Math.cos (ang+Math.toRadians (angSep)));
 	     p2.y=(int)(punto.y-dist*Math.sin (ang+Math.toRadians (angSep)));
+	   
 
-	     //dale color a la linea
-	     pone.setColor (Color.black);
-	     // grosor de la linea
-	     pone.setStroke (new BasicStroke(3.2f));
-	     //dibuja la linea de extremo a extremo
-	     pone.drawLine (punto1.x,punto1.y,punto.x,punto.y);
-	     //dibujar la punta
-	     //pone.drawLine (p1.x,p1.y,punto.x,punto.y);
-	     //pone.drawLine (p2.x,p2.y,punto.x,punto.y);    
+	     if(tipo.equals("basic"))
+	     {
+	    	 //dale color a la linea
+		     pone.setColor (Color.black);
+		     // grosor de la linea
+		     pone.setStroke (new BasicStroke(3.2f));
+		     //dibuja la linea de extremo a extremo
+		     pone.drawLine (punto1.x,punto1.y,punto.x,punto.y);
+	    	 
+	     }
+	     
+	     //Escribir sobre la linea  <<extend>>
+	     else if(tipo.equals("extend"))
+	     {
+	    	 //dale color a la linea
+		     pone.setColor (Color.red);
+		     float[] style = {5,5};
+		     pone.setStroke( new BasicStroke( 
+		             3.2f,
+		             BasicStroke.CAP_BUTT,
+		             BasicStroke.JOIN_MITER,
+		             10.0f,
+		             style,
+		             0));
+
+		     //dibuja la linea de extremo a extremo
+		     pone.drawLine (punto1.x,punto1.y,punto.x,punto.y);
+		     //dibujar la punta
+		     pone.setStroke (new BasicStroke(3.2f));
+		     pone.drawLine (p1.x,p1.y,punto.x,punto.y);
+		     pone.drawLine (p2.x,p2.y,punto.x,punto.y);
+		     
+		     System.out.print((int)ang);
+		     pone.rotate((int)ang);
+		     pone.drawString("<<extend>>",p1.x,30);
+		     pone.rotate(-(int)ang);
+	
+	     }
+	     
+	   //Escribir sobre la linea  <<include>>
+	     else if(tipo.equals("include"))
+	     {
+	    	 //dale color a la linea
+	    	 pone.setColor (Color.gray);
+		     float[] style = {5,5};
+		     pone.setStroke( new BasicStroke( 
+		             3.2f,
+		             BasicStroke.CAP_BUTT,
+		             BasicStroke.JOIN_MITER,
+		             10.0f,
+		             style,
+		             0));
+
+		     //dibuja la linea de extremo a extremo
+		     pone.drawLine (punto1.x,punto1.y,punto.x,punto.y);
+		     //dibujar la punta
+		     pone.setStroke (new BasicStroke(3.2f));
+		     pone.drawLine (p1.x,p1.y,punto.x,punto.y);
+		     pone.drawLine (p2.x,p2.y,punto.x,punto.y);
+		  
+	    	 
+	     }
+	     
+	     else
+	     {
+	    	 //dale color a la linea
+		     pone.setColor (Color.black);
+		     // grosor de la linea
+		     pone.setStroke (new BasicStroke(3.2f));
+		     //dibuja la linea de extremo a extremo
+		     pone.drawLine (punto1.x,punto1.y,punto.x,punto.y);
+		     //dibujar la punta
+		     pone.drawLine (p1.x,p1.y,punto.x,punto.y);
+		     pone.drawLine (p2.x,p2.y,punto.x,punto.y);
+		     pone.drawLine(p1.x, p1.y, p2.x, p2.y);
+	     
+	     }     
+	     
 
 	   }
 	
 	public void CrearConexiones()throws IOException{
 		
-		for(ActorCaso a: actores){
-			for(String s: a.getSalen()){
-				System.out.println(s);
-				int x1 = 0;
-				int y1 = 0;
-				int x2 = 0;
-				int y2 = 0;
-				
-				int xCaso = 0;
-				int yCaso = 0;
-				for(UsecaseCaso u: casos){
-					if(u.getId().equals(s)){
-						xCaso = u.getPosx();
-						yCaso = u.getPosy();
+		
+		String a1,a2,tipo,atipo="";
+		
+		for(ConnectionCaso a: conexiones)
+		{
+			a1=a.getFrom();
+			a2=a.getTo();
+			tipo=a.getType();
+			int x1=0,y1=0,x2=0,y2=0;
+			
+			//Para unir casos basic
+			if(tipo.equals("basic"))
+			{
+	
+				for(int i=0;i<actores.size();i++ )
+				{
+
+					if(actores.get(i).getId().equals(a1))
+					{
+
+						x1=actores.get(i).getPosx() + 36;
+						y1=actores.get(i).getPosy() + 63;
+						atipo=actores.get(i).getType();
 					}
 				}
 				
-				x1 = a.getPosx() + 36;
-				y1 = a.getPosy() + 63;
-				
-				if(a.getType().equals("primary")){
-					x2 = xCaso;
+				for(UsecaseCaso c: casos)
+				{
+					if(c.getId().equals(a2))
+					{
+
+						x2=c.getPosx();
+						if(atipo.equals("secondary"))
+						{
+							x2=c.getPosx()+173;
+						}
+						
+						y2=c.getPosy()+63;
+					}
 				}
-				else{
-					x2 = xCaso + 173;
-				}
-				y2 = yCaso+63;
-				dibujarFlecha(x1, y1, x2, y2);
 			}
+			
+			else
+			{
+	
+				for(UsecaseCaso c: casos)
+				{
+					if(c.getId().equals(a1))
+					{
+						x1=c.getPosx();
+						y1=c.getPosy()+63;
+					}
+				}
+				
+				for(UsecaseCaso c: casos)
+				{
+					if(c.getId().equals(a2))
+					{
+
+						x2=c.getPosx();						
+						y2=c.getPosy()+63;
+					}
+				}
+			}
+			
+			dibujarUnion(x1, y1, x2, y2,tipo);
 			
 		}
 		

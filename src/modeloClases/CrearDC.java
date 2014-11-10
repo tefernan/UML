@@ -18,7 +18,7 @@ public class CrearDC {
 	private Font font;
 	private Graphics2D pone ;
 	private Clase auxiliar;
-	private int posx,posy;
+	private int posx,posy, auxy;
 
 	//Recibe las clases a crear y las conexiones entre ella
 	public CrearDC(UmlClase u)
@@ -58,13 +58,25 @@ public class CrearDC {
 	
 	public void CrearAtributos()
 	{
-		
+		font = new Font("Serif", Font.PLAIN, 20);
+		pone.setFont(font);
+		for(int k = 0; k < auxiliar.getAtributos().size(); k++)
+		{
+			pone.drawString(auxiliar.getAtributos().get(k),posx+3,posy+50+k*25);
+			auxy=posy+50+k*25;
+		}
 		
 	}
 		
 	public void CrearMetodos()
 	{
-		
+		font = new Font("Serif", Font.PLAIN, 20);
+		pone.setFont(font);
+		for(int k = 0; k < auxiliar.getMetodos().size(); k++)
+		{
+			pone.drawString(auxiliar.getMetodos().get(k),posx+3,auxy+55+k*25);
+			auxy=posy+50+k*25;				
+		}
 	}
 	
 	
@@ -73,7 +85,7 @@ public class CrearDC {
 		//Itero por las clases
 		for(int i = 0; i<clases.size();i++)
 		{
-			int auxy=0;
+			auxy=0;
 			auxiliar= clases.get(i);
 			posx=auxiliar.getPosx();
 			posy= auxiliar.getPosy();
@@ -90,13 +102,7 @@ public class CrearDC {
 			pone.drawLine(posx, posy+30, posx+auxiliar.getAncho(), posy+30);
 			
 			//Pongo los atributos
-			font = new Font("Serif", Font.PLAIN, 20);
-			pone.setFont(font);
-			for(int k = 0; k < auxiliar.getAtributos().size(); k++)
-			{
-				pone.drawString(auxiliar.getAtributos().get(k),posx+3,posy+50+k*25);
-				auxy=posy+50+k*25;
-			}
+			CrearAtributos();
 
 			//Dibujo la linea 2
 			pone.setColor(Color.black);
@@ -104,13 +110,7 @@ public class CrearDC {
 			
 			
 			//Pongo los metodos
-			font = new Font("Serif", Font.PLAIN, 20);
-			pone.setFont(font);
-			for(int k = 0; k < auxiliar.getMetodos().size(); k++)
-			{
-				pone.drawString(auxiliar.getMetodos().get(k),posx+3,auxy+55+k*25);
-				auxy=posy+50+k*25;				
-			}
+			CrearMetodos();
 			
 			
 		}
