@@ -11,7 +11,7 @@ public class Clase {
 	
 	private ArrayList<String> salen = new ArrayList<String>(); //agregado
 	private ArrayList<String> entran = new ArrayList<String>(); //agregado
-	private ArrayList<String> conexionesTotales = new ArrayList<String>();
+	private ArrayList<String> total = new ArrayList<String>(); //agregado.
 	
 	private int ancho=0;
 	private int alto=0;
@@ -121,9 +121,9 @@ public class Clase {
 	
 	
 	//Agregar elementos de entrada y salida a las listas
-	public void addTotales(String nuevo)
+	public void addTotal(String nuevo)
 	{
-		conexionesTotales.add(nuevo);
+		total.add(nuevo);
 	}
 	
 	public void addSalen(String nuevo){ //agregado
@@ -150,8 +150,8 @@ public class Clase {
 		return entran;
 	}
 
-	public ArrayList<String> getConexionesTotales() {
-		return conexionesTotales;
+	public ArrayList<String> getTotal() {
+		return total;
 	}
 	
 

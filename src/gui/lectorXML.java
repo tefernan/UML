@@ -38,8 +38,11 @@ public class lectorXML {
 			Document doc = dBuilder.parse(new InputSource(new StringReader(texto)));
 			
 			doc.getDocumentElement().normalize();
-			String nombre = doc.getDocumentElement().getNodeName();
 			
+			NodeList nam = doc.getElementsByTagName("ClassDiagram");
+			Node na= nam.item(0);
+			Element nameElement = (Element) na;
+			String nombre = nameElement.getAttribute("name");
 			diag.setNombreDiagrama(nombre);
 			
 			
@@ -330,11 +333,11 @@ public class lectorXML {
 			for(ConnectionClase a: diag.getListaConexiones()){
 				if(c.getId().equals(a.getFrom())){
 					c.addSalen(a.getTo());
-					c.addTotales(a.getTo());
+					c.addTotal(a.getTo());
 				}
 				if(c.getId().equals(a.getTo())){
 					c.addEntran(a.getFrom());
-					c.addTotales(a.getFrom());
+					c.addTotal(a.getFrom());
 				}
 			}
 		}

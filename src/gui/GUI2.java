@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -19,6 +20,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -83,6 +87,7 @@ public class GUI2 {
 	//lector de xml
 	private lectorXML lector;
 
+	private Lienzo lnz;
 
 	public GUI2(String titulo){
 		//inicializamos ventana y menu
@@ -104,6 +109,7 @@ public class GUI2 {
 		herramientas.setFloatable(false);
 		
 		frame.setSize(700, 500);
+		frame.setExtendedState(frame.MAXIMIZED_BOTH);  
 		frame.setVisible(true);
 	}
 
@@ -113,12 +119,14 @@ public class GUI2 {
 		paneles = new JTabbedPane();
 		
 		tabCodigo = new JPanel();
-        tabImagen = new JPanel();
+		tabImagen = new JPanel();
         ImageIcon iconoDiagrama = new ImageIcon("res/diagrama.png");
         ImageIcon iconoCodigo = new ImageIcon("res/codigo.png");
         
         //tabCodigo.setLayout(new BorderLayout());
         tabCodigo.setLayout(new GridBagLayout());
+        
+        //PONER NULL PARA QUE FUNCIONE
         tabImagen.setLayout(new GridBagLayout());
         
         tabCodigo.setFocusable(false);
@@ -143,15 +151,21 @@ public class GUI2 {
         			generarClaseEnTab();
         		}
         		else if(index==1 && index2==1){//elige caso
-        			tabImagen.removeAll();
-        			generarCasoEnTab();
+        			tabImagen.removeAll();       
+        			try {
+						generarCasoEnTab();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
         		}
         	}
         };
         
         paneles.addChangeListener(changeListener);
-	}
 
+	}
+	
 
 	private void cargarEditorTexto() {
 		texto = new JTextPane();
@@ -189,7 +203,6 @@ public class GUI2 {
 		});
 		
 	}
-
 
 	private void cargarHerramientas() {
 		
@@ -258,26 +271,47 @@ public class GUI2 {
 		
 	}
 
-
+	
 	private ActionListener listenerbotonImagen() {
 		return new ActionListener() {
 			
 			//@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				/*
 				int index = opciones.getSelectedIndex();
 				if(index == 0){
 					generarDiagramaClase();
 				}
 				else if(index == 1){
-					generarDiagramaCaso();
+					try {
+						generarDiagramaCaso();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
+				*/
+				try {
+					asd();
+				}
+				catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 				
 			}
 		};
 		
 	}
 
+	
+	
+	private void asd() throws InterruptedException{
+		
+			lnz.paints();
+	}
 
 	private ActionListener listenerBotonAbrir() {
 		return new ActionListener() {
@@ -310,7 +344,6 @@ public class GUI2 {
 			}
 		};
 	}
-
 
 	private ActionListener listenerBotonGuardarComo() {
 		return new ActionListener() {
@@ -370,7 +403,6 @@ public class GUI2 {
 			}
 		};
 	}
-
 
 	private ActionListener listenerBotonGuardar() {
 		return new ActionListener() {
@@ -474,8 +506,10 @@ public class GUI2 {
 		
 		try{
 			diag.CrearClase();
+			diag.CrearConexiones();
 			ImageIcon iconTab = diag.FinalizarIcon();
 			JLabel picLabel = new JLabel(iconTab);
+			
 			JScrollPane scrollImagen = new JScrollPane(picLabel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 			
 			GridBagConstraints gbc = new GridBagConstraints();
@@ -491,6 +525,8 @@ public class GUI2 {
 			
 			tabImagen.add(scrollImagen,gbc);
 			
+			tabImagen.setBackground(Color.white);
+			
 		}catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -498,7 +534,7 @@ public class GUI2 {
 		
 	}
 	
-	public void generarDiagramaCaso(){
+	public void generarDiagramaCaso() throws IOException{
 		String t = texto.getText();
 		t = t.replace(" ", " "); //reemplazar caracter raro (ascii 160)
 		UmlCaso uml = lector.leerXMLCaso(t);
@@ -529,10 +565,13 @@ public class GUI2 {
 		
 	}
 	
-	public void generarCasoEnTab(){
+	
+	public Lienzo generarCasoEnTab() throws IOException{
 		String t = texto.getText();
 		t = t.replace(" ", " "); //reemplazar caracter raro (ascii 160)
 		UmlCaso uml = lector.leerXMLCaso(t);
+		
+		Lienzo ven = new Lienzo();
 		
 		uml.OrdenarActores();
 		uml.ordenarUserCases();
@@ -540,10 +579,45 @@ public class GUI2 {
 		CrearCaso diag = new CrearCaso(uml.getNombreDiagrama(), uml);
 		
 		try {
+			
 			diag.CrearUsers();
 			diag.CrearCasos();
 			diag.CrearConexiones();
 			ImageIcon iconTab = diag.FinalizarIcon();
+		
+	        tabImagen.setBackground(Color.WHITE);
+
+			ven.Lineas(diag.Desde(), diag.Hasta());
+			ven.Botones(diag.EnviarBotones(),diag.EnviarTipoBoton(),tabImagen);
+			tabImagen.setVisible(true);
+			
+			lnz=ven;
+			
+			Timer tim = new Timer();
+			TimerTask time = new TimerTask()
+		    { 
+		    public void run()
+		    {
+		    try {
+				lnz.paints();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    }
+		    };
+			
+		    tim.schedule(time, 50);
+			
+			
+			
+			//tabImagen=ven.Panel();
+			
+			//ven.paints();
+
+		
+					
+			/*
 			JLabel picLabel = new JLabel(iconTab);
 			JScrollPane scrollImagen = new JScrollPane(picLabel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 			
@@ -558,11 +632,15 @@ public class GUI2 {
 			gbc.insets = new Insets(5,5,5,2);
 			
 			
-			tabImagen.add(scrollImagen,gbc);
+			//tabImagen.add(scrollImagen,gbc);
+			 * 
+			 */
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return ven;
 	}
 }

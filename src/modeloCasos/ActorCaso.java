@@ -15,6 +15,10 @@ public class ActorCaso {
 	private int posx = 0;
 	private int posy = 0;
 	
+	//Ancho y alto
+	private int ancho;
+	private int alto;
+	
 	//Constructor del actor
 	public ActorCaso(String type, String id, String name) {
 		this.type = type;

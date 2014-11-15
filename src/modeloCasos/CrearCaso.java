@@ -1,12 +1,16 @@
 
 package modeloCasos;
 
+
+
 import java.awt.BasicStroke;
 import java.awt.Color;
+
 import java.awt.Font;
 import java.awt.Graphics2D;
+
 import java.awt.Point;
-import java.awt.geom.AffineTransform;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -15,12 +19,13 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+
 public class CrearCaso {
 	
 	private String name;
 	private Font font = new Font("Serif", Font.BOLD, 25);
 	private BufferedImage bi;
-	private Graphics2D pone ;
+	private Graphics2D pone;
 	private int ancho , alto ;
 	private BufferedImage img;
 	private ArrayList<ActorCaso> actores;
@@ -28,9 +33,18 @@ public class CrearCaso {
 	private ArrayList<ConnectionCaso> conexiones;
 	private File actor = new File("res/actor.PNG");
 	private File ovalo = new File("res/ovalo.PNG");
+	private ImageIcon fondo;
+	
+	private ArrayList<Point> de = new ArrayList<Point>();
+	private ArrayList<Point> a = new ArrayList<Point>();
+	private ArrayList<Point> boton = new ArrayList<Point>();
+	private ArrayList<String> tipoBoton = new ArrayList<String>();
+	
+
+
 
 	//Empiezo a crear la imagen PNG
-	public CrearCaso(String nombre, UmlCaso U) {
+	public CrearCaso(String nombre, UmlCaso U) throws IOException {
 		this.name = nombre;
 		this.actores=U.getListaActores();
 		this.casos=U.getListaCasos();
@@ -48,7 +62,7 @@ public class CrearCaso {
 		pone.setColor(Color.black);
 		pone.setFont(font);
 		pone.drawString(nombre,ancho*2/5,25);
-		
+
 	}
 
 	//Pongo los usuarios en la imagen, se entrega una lista con los usuarios
@@ -59,25 +73,11 @@ public class CrearCaso {
 		
 		for(int i = 0; i<actores.size();i++)
 		{
-			//Primario
-			if(actores.get(i).getType()=="primary")
-			{
 				pone.drawImage(img, actores.get(i).getPosx(), actores.get(i).getPosy(), null);
 				pone.setColor(Color.black);
 				pone.setFont(font);
 				pone.drawString(actores.get(i).getName(), actores.get(i).getPosx(), actores.get(i).getPosy()+img.getHeight()+20);
-				
-			}
-			
-			//Secundario no se si es necesario porque se crean las posiciones antes
-			else
-			{
-				pone.drawImage(img, actores.get(i).getPosx(), actores.get(i).getPosy(), null);
-				pone.setColor(Color.black);
-				pone.setFont(font);
-				pone.drawString(actores.get(i).getName(), actores.get(i).getPosx(), actores.get(i).getPosy()+img.getHeight()+20);
-				
-			}
+				CrearBotonAct(i);
 		}
 
 	}
@@ -120,7 +120,7 @@ public class CrearCaso {
 		{
 			//Insertar ovalo
 			pone.drawImage(img,casos.get(i).getPosx(), casos.get(i).getPosy(), null);
-			
+			CrearBotonCaso(i);
 			//pone.drawString(casos.get(i).getName(),casos.get(i).getPosx()+20,casos.get(i).getPosy()+img.getHeight()/3);
 			String[] parrafo = casos.get(i).getName().split(delims);
 			
@@ -195,7 +195,10 @@ public class CrearCaso {
 		     pone.setStroke (new BasicStroke(3.2f));
 		     //dibuja la linea de extremo a extremo
 		     pone.drawLine (punto1.x,punto1.y,punto.x,punto.y);
-	    	 
+		     
+		     de.add(punto1);
+		     a.add(punto);
+
 	     }
 	     
 	     //Escribir sobre la linea  <<extend>>
@@ -214,14 +217,17 @@ public class CrearCaso {
 
 		     //dibuja la linea de extremo a extremo
 		     pone.drawLine (punto1.x,punto1.y,punto.x,punto.y);
+		     
 		     //dibujar la punta
 		     pone.setStroke (new BasicStroke(3.2f));
 		     pone.drawLine (p1.x,p1.y,punto.x,punto.y);
+		     
 		     pone.drawLine (p2.x,p2.y,punto.x,punto.y);
 		     
-		     System.out.print((int)ang);
+		     
 		     pone.rotate((int)ang);
 		     pone.drawString("<<extend>>",p1.x,30);
+		     
 		     pone.rotate(-(int)ang);
 	
 	     }
@@ -341,6 +347,53 @@ public class CrearCaso {
 		
 	}
 
+	public void CrearBotonAct (int i) throws IOException
+	{
+		Point aux = new Point();
+		aux.x=actores.get(i).getPosx();
+		aux.y=actores.get(i).getPosy();
+        //act.setBounds(actores.get(i).getPosx(), actores.get(i).getPosy(), 79, 129);
+		boton.add(aux);
+		tipoBoton.add("Actor");
+
+	}
+	
+	public void CrearBotonCaso(int i) throws IOException
+	{
+		Point aux = new Point();
+		aux.x=casos.get(i).getPosx();
+		aux.y=casos.get(i).getPosy();
+        //act.setBounds(casos.get(i).getPosx(), casos.get(i).getPosy(), 173, 127);
+		boton.add(aux);
+		tipoBoton.add("Caso");
+	}
+	
+	//Envío listado botones
+	public ArrayList<Point> EnviarBotones()
+	{
+		return boton;
+	}
+	
+	public ArrayList<String> EnviarTipoBoton()
+	{
+		return tipoBoton;
+	}
+	
+	public ArrayList<Point> Desde()
+	{
+
+		return de;
+	}
+	
+	public ArrayList<Point> Hasta()
+	{
+		return a;
+	}
+	
+	
+	
+	
+	
 	public void Finalizar() throws IOException{
 		ImageIO.write(bi, "PNG", new File(name+".PNG"));
 	}
@@ -349,9 +402,11 @@ public class CrearCaso {
 		ImageIO.write(bi, "PNG", dir);
 	}
 	
+	
+	
+	
 	public ImageIcon FinalizarIcon(){
-		ImageIcon image = new ImageIcon(bi);
-		return image;
+		return fondo;
 		
 	}
 

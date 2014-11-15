@@ -1,0 +1,43 @@
+<ClassDiagram name = "Content Management System"> 
+	<class id = "c1" name = "clase 1"> 
+		<attributes> 
+			<att name="name" type="String" visibility="­"/> 
+			<att name="name" type="URL" visibility="+"/>
+			<att name="authors" type="Author[1..5]" visibility="­"/> 
+		</attributes> 
+		<methods> 
+			<method name = "addEntry" type = "void" visibility="­"> 
+				<param name = "newEntry" type = "BlogEntry" /> 
+			</method> 
+		</methods> 
+	</class> 
+	<class id = "c2" name = "clase 2"> 
+		<attributes> 
+			<att name="name" type="String" visibility="­"/> 
+			<att name="name" type="URL" visibility="+"/> 
+			<att name="authors" type="Author[1..5]" visibility="­"/> 
+		</attributes> 
+		<methods> 
+			<method name = "addEntry" type = "void" visibility="+"> 
+				<param name = "newEntry" type = "BlogEntry" /> 
+			</method> 
+		</methods> 
+	</class> 
+	<class id = "c2" name = "clase 3"> 
+		<attributes> 
+			<att name="name" type="String" visibility="­"/> 
+			<att name="name" type="URL" visibility="+"/> 
+			<att name="authors" type="Author[1..5]" visibility="­"/> 
+		</attributes> 
+		<methods> 
+			<method name = "addEntry" type = "void" visibility="#"> 
+				<param name = "newEntry" type = "BlogEntry" /> 
+			</method> 
+		</methods> 
+	</class> 
+	<connections>
+		<connection type = "basic" from = "c1" to = " c2" />
+		<connection type = "basic" from = "c1" to = " c3" />
+	</connections>
+</ClassDiagram> 
+ 
