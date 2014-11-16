@@ -282,12 +282,7 @@ public class GUI2 {
 					generarDiagramaClase();
 				}
 				else if(index == 1){
-					try {
-						generarDiagramaCaso();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					ventanaCaso VC = new ventanaCaso(texto.getText());
 				}
 				
 				

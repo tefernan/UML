@@ -282,37 +282,41 @@ public class CrearDC {
 
 			// Como conecto!
 
+			/*
 			if (y1 + clases.get(p1).getAlto() < y2 && ((x1<x2 && x2<x1+clases.get(p1).getAncho())||(x2<x1 && x1<x2+clases.get(p2).getAncho()))) {
 				x1 += clases.get(p1).getAncho() / 2;
 				y1 += clases.get(p1).getAlto();
 				x2 += clases.get(p2).getAncho() / 2;
 			}
-			
+			*/
 			
 
-			/*
-			 * //Conecto p1 por abajo y p2 por arriba if(y1<y2 && y1<y2 &&
-			 * y2>y1+clases.get(p1).getAlto()) { System.out.print("C");
-			 * x1+=clases.get(p1).getAncho()/2; y1+=clases.get(p1).getAlto();
-			 * x2+=clases.get(p2).getAncho()/2; }
-			 * 
-			 * //Conecto p1 por arriba y p2 por abajo if(y2<y1) {
-			 * x1+=clases.get(p1).getAncho()/2; x2+=clases.get(p2).getAncho()/2;
-			 * y2+=clases.get(p2).getAlto(); }
-			 * 
-			 * if(y2<y1 && y1<y2 && y2<y1+clases.get(p1).getAlto()) {
-			 * System.out.print("hola"); }
-			 * 
-			 * //Conecto p1 por derecha y p2 por izquierda if(x1<x2 && y1==y2) {
-			 * 
-			 * 
-			 * x1+=clases.get(p1).getAncho(); y1+=clases.get(p1).getAlto()/2;
-			 * y2+=clases.get(p2).getAlto()/2; }
-			 * 
-			 * //Conecto p2 por derecha y p1 por izquierda if(x2<x1 && y1==y2) {
-			 * y1+=clases.get(p1).getAlto()/2; x2+=clases.get(p2).getAncho();
-			 * y2+=clases.get(p2).getAlto()/2; }
-			 */
+			
+			  //Conecto p1 por abajo y p2 por arriba 
+			if(y1<y2 && y1<y2 && y2>y1+clases.get(p1).getAlto()) { System.out.print("C");
+			  x1+=clases.get(p1).getAncho()/2; y1+=clases.get(p1).getAlto();
+			  x2+=clases.get(p2).getAncho()/2; }
+			  
+			  //Conecto p1 por arriba y p2 por abajo 
+			if(y2<y1) {
+			  x1+=clases.get(p1).getAncho()/2; x2+=clases.get(p2).getAncho()/2;
+			  y2+=clases.get(p2).getAlto(); }
+			  
+			  if(y2<y1 && y1<y2 && y2<y1+clases.get(p1).getAlto()) {
+			  System.out.print("hola"); }
+			  
+			  //Conecto p1 por derecha y p2 por izquierda 
+			  if(x1<x2 && y1==y2) {
+			  
+			  
+			  x1+=clases.get(p1).getAncho(); y1+=clases.get(p1).getAlto()/2;
+			  y2+=clases.get(p2).getAlto()/2; }
+			  
+			  //Conecto p2 por derecha y p1 por izquierda 
+			  if(x2<x1 && y1==y2) {
+			  y1+=clases.get(p1).getAlto()/2; x2+=clases.get(p2).getAncho();
+			  y2+=clases.get(p2).getAlto()/2; }
+			 
 
 			dibujarUnion(x1, y1, x2, y2, tipo);
 
