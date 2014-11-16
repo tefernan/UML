@@ -46,6 +46,11 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.ComboBoxUI;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -272,7 +277,9 @@ public class GUI2 {
 					generarDiagramaClase();
 				}
 				else if(index == 1){
-					generarDiagramaCaso();
+					//generarDiagramaCaso();
+					ventanaCaso ventana = new ventanaCaso(texto.getText());
+					//ventana.generarCaso(texto.getText());
 				}
 				
 			}
@@ -664,6 +671,7 @@ public class GUI2 {
 				
                 super.remove(offs, len);
 
+                /*
                 String text = getText(0, getLength());
                 int before = nonCharIzquierda(text, offs);
                 if (before < 0) before = 0;
@@ -677,6 +685,7 @@ public class GUI2 {
                 else
                 	setCharacterAttributes(before, after - before, attrBlack, false);
                 
+                */
             }
 
 		};

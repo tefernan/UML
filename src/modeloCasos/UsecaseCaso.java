@@ -35,7 +35,7 @@ public class UsecaseCaso {
 	}
 	public void addUniones(String nuevo){
 		uniones.add(nuevo);
-		System.out.println(nuevo);
+		//System.out.println(nuevo);
 	}
 	
 	//Getters de la lista
