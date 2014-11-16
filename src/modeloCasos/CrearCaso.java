@@ -40,9 +40,7 @@ public class CrearCaso {
 	private ArrayList<Point> boton = new ArrayList<Point>();
 	private ArrayList<String> tipoBoton = new ArrayList<String>();
 	
-
-
-
+	
 	//Empiezo a crear la imagen PNG
 	public CrearCaso(String nombre, UmlCaso U) throws IOException {
 		this.name = nombre;
@@ -50,9 +48,28 @@ public class CrearCaso {
 		this.casos=U.getListaCasos();
 		this.conexiones=U.getListaConexiones();
 		
+		int au=0;
 		//Propiedades imagen png
-		ancho=1300;
-		alto=100+150*casos.size();
+		for(ActorCaso a: actores)
+		{
+			if(au<a.getName().length())
+			{
+				au=a.getName().length();
+			}
+			
+		}
+		
+		ancho=1250+au*6;
+		
+		if(casos.size()>actores.size())
+		{
+		alto=50+150*casos.size();
+		}
+		
+		else
+		{
+		alto=50+150*actores.size();
+		}
 		
 		bi = new BufferedImage(ancho, alto,
 				BufferedImage.TYPE_INT_ARGB);
@@ -221,14 +238,14 @@ public class CrearCaso {
 		     //dibujar la punta
 		     pone.setStroke (new BasicStroke(3.2f));
 		     pone.drawLine (p1.x,p1.y,punto.x,punto.y);
-		     
 		     pone.drawLine (p2.x,p2.y,punto.x,punto.y);
 		     
+		     System.out.println(ang);
 		     
-		     pone.rotate((int)ang);
-		     pone.drawString("<<extend>>",p1.x,30);
+		    // pone.rotate((int)ang);
+		     pone.drawString("<<extend>>",punto1.x,punto1.y);
 		     
-		     pone.rotate(-(int)ang);
+		    // pone.rotate(-(int)ang);
 	
 	     }
 	     
@@ -252,6 +269,8 @@ public class CrearCaso {
 		     pone.setStroke (new BasicStroke(3.2f));
 		     pone.drawLine (p1.x,p1.y,punto.x,punto.y);
 		     pone.drawLine (p2.x,p2.y,punto.x,punto.y);
+		     
+		     pone.drawString("<<include>>",punto1.x,punto1.y);
 		  
 	    	 
 	     }
@@ -259,7 +278,7 @@ public class CrearCaso {
 	     else
 	     {
 	    	 //dale color a la linea
-		     pone.setColor (Color.black);
+		     pone.setColor (Color.blue);
 		     // grosor de la linea
 		     pone.setStroke (new BasicStroke(3.2f));
 		     //dibuja la linea de extremo a extremo
@@ -278,6 +297,7 @@ public class CrearCaso {
 		
 		
 		String a1,a2,tipo,atipo="";
+		int p1=0,p2=0;
 		
 		for(ConnectionCaso a: conexiones)
 		{
@@ -285,6 +305,7 @@ public class CrearCaso {
 			a2=a.getTo();
 			tipo=a.getType();
 			int x1=0,y1=0,x2=0,y2=0;
+			
 			
 			//Para unir casos basic
 			if(tipo.equals("basic"))
@@ -295,7 +316,6 @@ public class CrearCaso {
 
 					if(actores.get(i).getId().equals(a1))
 					{
-
 						x1=actores.get(i).getPosx() + 36;
 						y1=actores.get(i).getPosy() + 63;
 						atipo=actores.get(i).getType();
@@ -320,13 +340,12 @@ public class CrearCaso {
 			
 			else
 			{
-	
 				for(UsecaseCaso c: casos)
 				{
 					if(c.getId().equals(a1))
 					{
 						x1=c.getPosx();
-						y1=c.getPosy()+63;
+						y1=c.getPosy();
 					}
 				}
 				
@@ -336,8 +355,41 @@ public class CrearCaso {
 					{
 
 						x2=c.getPosx();						
-						y2=c.getPosy()+63;
+						y2=c.getPosy();
 					}
+				}
+				
+				if(y1<y2)
+				{
+					
+					x1+=173/2;
+					y1+=127;
+					x2+=127/2;
+				}
+				
+				//Conecto p1 por arriba y p2 por abajo
+				if(y2<y1)
+				{
+					x1+=127/2;
+					x2+=127/2;
+					y2+=127;
+				}
+				
+				//Conecto p1 por derecha y p2 por izquierda
+				if(x1<x2 && y1==y2)
+				{
+					
+					x1+=127;
+					y1+=127/2;
+					y2+=127/2;
+				}
+				
+				//Conecto p2 por derecha y p1 por izquierda
+				if(x2<x1 && y1==y2)
+				{
+					y1+=127/2;
+					x2+=127;
+					y2+=127/2;
 				}
 			}
 			
@@ -390,10 +442,6 @@ public class CrearCaso {
 		return a;
 	}
 	
-	
-	
-	
-	
 	public void Finalizar() throws IOException{
 		ImageIO.write(bi, "PNG", new File(name+".PNG"));
 	}
@@ -403,10 +451,9 @@ public class CrearCaso {
 	}
 	
 	
-	
-	
 	public ImageIcon FinalizarIcon(){
-		return fondo;
+		ImageIcon image = new ImageIcon(bi);
+		return image;
 		
 	}
 

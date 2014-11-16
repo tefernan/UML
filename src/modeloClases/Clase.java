@@ -22,14 +22,14 @@ public class Clase {
 		this.nombre = n;
 		this.id = i;
 		ancho=n.length();
-		alto+=1;
+		alto=40;
 	}
 
 	//Agregar Atributos uno por uno
 	public void AgregarAtributo(String a)
 	{
 		atributos.add(a);
-		alto+=1;
+		alto+=20;
 		
 		if(ancho<a.length())
 		{
@@ -41,7 +41,7 @@ public class Clase {
 	public void AgregarMetodos(String a)
 	{
 		metodos.add(a);		
-		alto+=1;
+		alto+=20;
 		
 		if(ancho<a.length())
 		{
@@ -81,7 +81,7 @@ public class Clase {
 	
 	//Obtengo Ancho Máximo (Caracteres palabra más larga)
 	public int getAncho() {
-		return (ancho/3)*27;
+		return ancho*9;
 	}
 
 	//Seteo Ancho
@@ -91,7 +91,7 @@ public class Clase {
 
 	//Obtengo Alto Máximo (Depende de cantidad metodos y atributos)
 	public int getAlto() {
-		return alto*33;
+		return alto;
 	}
 	
 	//Seteo Alto

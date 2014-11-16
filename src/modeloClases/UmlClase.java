@@ -9,6 +9,8 @@ public class UmlClase {
 	private String nombreDiagrama;
 	private ArrayList<Clase> listaClases;
 	private ArrayList<ConnectionClase> listaConexiones;
+	
+	private int anchomax=0,altomax=0;
 	//private ArrayList<String> listaColocadosDC;
 	
 	public UmlClase(){
@@ -76,40 +78,41 @@ public class UmlClase {
 				}
 		}
 		
-		int coordx_arriba = 0;
-		int coordy_arriba = 0;
+		int coordx_arriba = 10;
+		int coordy_arriba = 40;
 		for(Clase c: arriba)
 		{
 			c.setPosx(coordx_arriba);
 			c.setPosy(coordy_arriba);
-			coordx_arriba += 400;
+			coordx_arriba += anchomax+30;
 		}
 		
-		int coordx_izquierda = 0;
-		int coordy_izquierda = 400;
+		int coordx_izquierda = 10;
+		int coordy_izquierda = altomax+30;
 		for(Clase c: izquierda)
 		{
 			c.setPosx(coordx_izquierda);
 			c.setPosy(coordy_izquierda);
-			coordy_izquierda += 400;
+			coordy_izquierda += altomax+30;
 		}
 		
-		int coordx_abajo = 400;
-		int coordy_abajo = 800;
+		int coordx_abajo = altomax+30;
+		int coordy_abajo = anchomax+30;
 		for(Clase c: abajo)
 		{
 			c.setPosx(coordx_abajo);
 			c.setPosy(coordy_abajo);
-			coordx_abajo += 400;
+			coordx_abajo += anchomax;
 		}
 		
-		int coordx_derecha = 400;
-		int coordy_derecha = 400;
+		int coordx_derecha = anchomax+30;
+		int coordy_derecha = altomax+30;
+		
 		for(Clase c: derecha)
 		{
 			c.setPosx(coordx_derecha);
 			c.setPosy(coordy_derecha);
-			coordy_derecha += 400;
+			coordy_derecha += altomax+30;
 		}	
 	}
 	
@@ -181,6 +184,15 @@ public class UmlClase {
 	//añadir elementos a las listas
 	public void addClases(Clase c){
 		listaClases.add(c);
+		if(altomax<c.getAlto())
+		{
+			altomax=c.getAlto();
+		}
+		
+		if(anchomax<c.getAncho())
+		{
+			anchomax=c.getAncho();
+		}
 	}
 	public void addConexion(ConnectionClase c){
 		listaConexiones.add(c);

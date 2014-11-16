@@ -125,8 +125,6 @@ public class GUI2 {
         
         //tabCodigo.setLayout(new BorderLayout());
         tabCodigo.setLayout(new GridBagLayout());
-        
-        //PONER NULL PARA QUE FUNCIONE
         tabImagen.setLayout(new GridBagLayout());
         
         tabCodigo.setFocusable(false);
@@ -278,7 +276,7 @@ public class GUI2 {
 			//@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				/*
+				
 				int index = opciones.getSelectedIndex();
 				if(index == 0){
 					generarDiagramaClase();
@@ -291,14 +289,6 @@ public class GUI2 {
 						e1.printStackTrace();
 					}
 				}
-				*/
-				try {
-					asd();
-				}
-				catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 				
 				
 			}
@@ -306,12 +296,7 @@ public class GUI2 {
 		
 	}
 
-	
-	
-	private void asd() throws InterruptedException{
-		
-			lnz.paints();
-	}
+
 
 	private ActionListener listenerBotonAbrir() {
 		return new ActionListener() {
@@ -564,14 +549,11 @@ public class GUI2 {
 		}
 		
 	}
-	
-	
-	public Lienzo generarCasoEnTab() throws IOException{
+		
+	public void generarCasoEnTab() throws IOException{
 		String t = texto.getText();
 		t = t.replace(" ", " "); //reemplazar caracter raro (ascii 160)
 		UmlCaso uml = lector.leerXMLCaso(t);
-		
-		Lienzo ven = new Lienzo();
 		
 		uml.OrdenarActores();
 		uml.ordenarUserCases();
@@ -579,46 +561,12 @@ public class GUI2 {
 		CrearCaso diag = new CrearCaso(uml.getNombreDiagrama(), uml);
 		
 		try {
-			
-			diag.CrearUsers();
 			diag.CrearCasos();
+			diag.CrearUsers();
 			diag.CrearConexiones();
 			ImageIcon iconTab = diag.FinalizarIcon();
-		
-	        tabImagen.setBackground(Color.WHITE);
-
-			ven.Lineas(diag.Desde(), diag.Hasta());
-			ven.Botones(diag.EnviarBotones(),diag.EnviarTipoBoton(),tabImagen);
-			tabImagen.setVisible(true);
-			
-			lnz=ven;
-			
-			Timer tim = new Timer();
-			TimerTask time = new TimerTask()
-		    { 
-		    public void run()
-		    {
-		    try {
-				lnz.paints();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		    }
-		    };
-			
-		    tim.schedule(time, 50);
-			
-			
-			
-			//tabImagen=ven.Panel();
-			
-			//ven.paints();
-
-		
-					
-			/*
 			JLabel picLabel = new JLabel(iconTab);
+			
 			JScrollPane scrollImagen = new JScrollPane(picLabel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 			
 			GridBagConstraints gbc = new GridBagConstraints();
@@ -632,15 +580,14 @@ public class GUI2 {
 			gbc.insets = new Insets(5,5,5,2);
 			
 			
-			//tabImagen.add(scrollImagen,gbc);
-			 * 
-			 */
+			tabImagen.add(scrollImagen,gbc);
+			
+			tabImagen.setBackground(Color.white);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return ven;
 	}
 }

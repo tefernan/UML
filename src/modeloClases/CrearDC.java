@@ -21,7 +21,7 @@ public class CrearDC {
 	private Font font;
 	private Graphics2D pone ;
 	private Clase auxiliar;
-	private int posx,posy, auxy;
+	private int posx,posy, auxy, ancho, alto;
 	
 	private ArrayList<Point> de = new ArrayList<Point>();
 	private ArrayList<Point> a = new ArrayList<Point>();
@@ -30,26 +30,45 @@ public class CrearDC {
 	public CrearDC(UmlClase u)
 	{
 		
-		//Que se cree dependiendo del mas abajo!ArrayList<Clase> a
-	
 		this.clases=u.getListaClases();
 		name = u.getNombreDiagrama();
-
 		this.conexiones=u.getListaConexiones();
+		
+		
+		//Auxiliares para crear dimensión imagen
+		int x=0,y=0;
+		int ancho=0, alto=0;
+		for(Clase c : clases)
+		{
+			if(x<c.getPosx()+c.getAncho())
+			{
+				x=c.getPosx();
+				ancho=x+c.getAncho();
+			}
+			
+			if(y<c.getPosy()+c.getAlto())
+			{
+				y=c.getPosy();
+				alto=y+c.getAlto();
+			}
+			
+		}
+		
+		ancho+=20;
+		alto+=20;
 
-		bi = new BufferedImage(1000, 1000,
+		bi = new BufferedImage(ancho, alto,
 				BufferedImage.TYPE_INT_ARGB);
 		pone = bi.createGraphics();
-	
 
 		pone.setColor(Color.white);
-		pone.fillRect(0, 0, 1000, 1000);
+		pone.fillRect(0, 0, bi.getWidth(), bi.getHeight());
 		pone.setStroke (new BasicStroke(3.2f));
 		
 		pone.setColor(Color.black);
 		font = new Font("Serif", Font.BOLD, 30);
 		pone.setFont(font);
-		pone.drawString(name,500,20);
+		pone.drawString(name,bi.getWidth()/3,30);
 
 	}
 	
@@ -60,7 +79,7 @@ public class CrearDC {
 		font = new Font("Serif", Font.BOLD, 20);
 		pone.setFont(font);
 		pone.drawString(auxiliar.getNombre(),posx+3,posy+20);
-	
+		auxy+=25;
 	}
 	
 	public void CrearAtributos()
@@ -69,9 +88,11 @@ public class CrearDC {
 		pone.setFont(font);
 		for(int k = 0; k < auxiliar.getAtributos().size(); k++)
 		{
-			pone.drawString(auxiliar.getAtributos().get(k),posx+3,posy+50+k*25);
-			auxy=posy+50+k*25;
+			auxy+=20;
+			pone.drawString(auxiliar.getAtributos().get(k),posx+3,auxy);
 		}
+		
+		auxy+=10;
 		
 	}
 		
@@ -81,8 +102,8 @@ public class CrearDC {
 		pone.setFont(font);
 		for(int k = 0; k < auxiliar.getMetodos().size(); k++)
 		{
-			pone.drawString(auxiliar.getMetodos().get(k),posx+3,auxy+55+k*25);
-			auxy=posy+50+k*25;				
+			auxy+=20;
+			pone.drawString(auxiliar.getMetodos().get(k),posx+3,auxy);		
 		}
 	}
 	
@@ -91,29 +112,30 @@ public class CrearDC {
 		//Itero por las clases
 		for(int i = 0; i<clases.size();i++)
 		{
-			auxy=0;
+			
 			auxiliar= clases.get(i);
 			posx=auxiliar.getPosx();
 			posy= auxiliar.getPosy();
+			ancho=auxiliar.getAncho();
+			alto= auxiliar.getAlto();
+			auxy=posy;
 		
 			//Creo el Rectangulo
 			pone.setColor(Color.BLACK);
-			pone.drawRect(posx, posy, auxiliar.getAncho()+10, auxiliar.getAlto());
-
+			pone.drawRect(posx, posy, ancho, alto);
 
 			CrearNombre();
 			
 			//Dibujo la linea 1
-			pone.setColor(Color.black);
-			pone.drawLine(posx, posy+30, posx+auxiliar.getAncho()+10, posy+30);
+			pone.setColor(Color.BLACK);
+			pone.drawLine(posx, auxy, posx+ancho, auxy);
 			
 			//Pongo los atributos
 			CrearAtributos();
 
 			//Dibujo la linea 2
-			pone.setColor(Color.black);
-			pone.drawLine(posx, auxy+30, posx+auxiliar.getAncho()+10, auxy+30);
-			
+			pone.setColor(Color.BLACK);
+			pone.drawLine(posx, auxy, posx+ancho, auxy);
 			
 			//Pongo los metodos
 			CrearMetodos();
@@ -252,44 +274,71 @@ public class CrearDC {
 	
 	public void CrearConexiones()throws IOException{
 		
-		String a1,a2,tipo,atipo="";
+		String a1,a2,tipo;
+		int p1=0,p2=0;
 		
 		for(ConnectionClase a: conexiones)
 		{
 			a1=a.getFrom();
 			a2=a.getTo();
 			tipo=a.getType();
+			
 			int x1=0,y1=0,x2=0,y2=0;
-			
-			
-			//Para unir basic
-			if(tipo.equals("basic"))
-			{
 	
-				for(int i=0;i<clases.size();i++ )
+
+				for(int i=0;i<clases.size();i++)
 				{
-					
 					if(clases.get(i).getId().equals(a1))
 					{
-
-						x1=clases.get(i).getPosx() + 36;
-						y1=clases.get(i).getPosy() + 63;
+						p1=i;
+						x1=clases.get(i).getPosx();
+						y1=clases.get(i).getPosy();
+						
+					}
+					
+					if(clases.get(i).getId().equals(a2))
+					{
+						p2=i;
+						x2=clases.get(i).getPosx();
+						y2=clases.get(i).getPosy();
 						
 					}
 				}
-				
-				for(Clase c: clases)
-				{
-					if(c.getId().equals(a2))
-					{
 
-						x2=c.getPosx();
-						y2=c.getPosy()+63;
-					}
-				}
+			
+			//Conecto p1 por abajo y p2 por arriba
+			if(y1<y2)
+			{
 				
+				x1+=clases.get(p1).getAncho()/2;
+				y1+=clases.get(p1).getAlto();
+				x2+=clases.get(p2).getAncho()/2;
 			}
 			
+			//Conecto p1 por arriba y p2 por abajo
+			if(y2<y1)
+			{
+				x1+=clases.get(p1).getAncho()/2;
+				x2+=clases.get(p2).getAncho()/2;
+				y2+=clases.get(p2).getAlto();
+			}
+			
+			//Conecto p1 por derecha y p2 por izquierda
+			if(x1<x2 && y1==y2)
+			{
+				
+				x1+=clases.get(p1).getAncho();
+				y1+=clases.get(p1).getAlto()/2;
+				y2+=clases.get(p2).getAlto()/2;
+			}
+			
+			//Conecto p2 por derecha y p1 por izquierda
+			if(x2<x1 && y1==y2)
+			{
+				y1+=clases.get(p1).getAlto()/2;
+				x2+=clases.get(p2).getAncho();
+				y2+=clases.get(p2).getAlto()/2;
+			}
 			
 			
 			dibujarUnion(x1, y1, x2, y2,tipo);
