@@ -5,12 +5,10 @@ package modeloCasos;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-
 import java.awt.Font;
 import java.awt.Graphics2D;
-
+import java.awt.List;
 import java.awt.Point;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -108,30 +106,40 @@ public class CrearCaso {
 		img = ImageIO.read(ovalo);
 
 		String delims = "[\n]";
+		String del = "[ ]";
+		
+		ArrayList<String> texto;
+		ArrayList<ArrayList<String>> nombres = new ArrayList<ArrayList<String>>();
 		
 		
 		//Leo el caso de uso y lo divido por cantidad de caracteres bajando cada 14 caracteres, 30  y 44
 		for(int i = 0; i<casos.size();i++)
 		{
-			String a1, a2;
-			if(casos.get(i).getName().length()>14 && casos.get(i).getName().length()<=30)
-			{
-				a1=casos.get(i).getName().substring(0,14)+"\n";
-				a2=a1+casos.get(i).getName().substring(15,casos.get(i).getName().length());
-				casos.get(i).setName(a2);
-			}
+			String a1="", a2="", aux="";
+			texto= new ArrayList<String>();
 			
-			else if(casos.get(i).getName().length()>30)
-			{
-				a1=casos.get(i).getName().substring(0,14)+"\n"+ casos.get(i).getName().substring(15,30)+"\n";
-				a2=a1+casos.get(i).getName().substring(31,casos.get(i).getName().length());
-				casos.get(i).setName(a2);
-				
+			String par[] = casos.get(i).getName().split(del);
+						
+			for(String a: par)
+			{				
+				if(aux.length()<14)
+				{
+					a2=aux;
+					aux+=a+" ";
+					a1=a;
+					
+					if(aux.length()>14)
+					{
+						texto.add(a2);
+						aux=a1+" ";
+					}
+					
+				}
 			}
+			texto.add(aux);
+			nombres.add(texto); 
 			
 		}
-		
-		
 		
 		for(int i=0;i<casos.size();i++)
 		{
@@ -139,26 +147,40 @@ public class CrearCaso {
 			pone.drawImage(img,casos.get(i).getPosx(), casos.get(i).getPosy(), null);
 			CrearBotonCaso(i);
 			//pone.drawString(casos.get(i).getName(),casos.get(i).getPosx()+20,casos.get(i).getPosy()+img.getHeight()/3);
-			String[] parrafo = casos.get(i).getName().split(delims);
-			
-			for(int k = 0; k<parrafo.length;k++)
-			{
-				if(k==0)
+		
+				int p=0;
+				
+				for(String b : nombres.get(i))
 				{
-				pone.drawString(parrafo[k], casos.get(i).getPosx()+20, casos.get(i).getPosy()+img.getHeight()/3);
-				}
-				else if(k==1)
-				{
-					pone.drawString(parrafo[1], casos.get(i).getPosx()+10, casos.get(i).getPosy()+img.getHeight()/2);
+					if(p==0)
+					{
+						pone.drawString(b, casos.get(i).getPosx()+20, casos.get(i).getPosy()+40);
+					}
+					
+					else if(p==1)
+					{
+						pone.drawString(b, casos.get(i).getPosx()+10, casos.get(i).getPosy()+60);
+					}
+					
+					else if(p==2)
+					{
+						pone.drawString(b, casos.get(i).getPosx()+20, casos.get(i).getPosy()+80);
+					}
+					
+					else if(p==3)
+					{
+						pone.drawString(b, casos.get(i).getPosx()+27, casos.get(i).getPosy()+100);
+					}
+
+					p++;
 				}
 				
-				else
-				{
-					pone.drawString(parrafo[2], casos.get(i).getPosx()+20, casos.get(i).getPosy()+img.getHeight()*2/3);
-				}
-			}
+				
+			
+
 			
 		}
+
 	
 		
 	}
@@ -240,12 +262,7 @@ public class CrearCaso {
 		     pone.drawLine (p1.x,p1.y,punto.x,punto.y);
 		     pone.drawLine (p2.x,p2.y,punto.x,punto.y);
 		     
-		     System.out.println(ang);
-		     
-		    // pone.rotate((int)ang);
 		     pone.drawString("<<extend>>",punto1.x,punto1.y);
-		     
-		    // pone.rotate(-(int)ang);
 	
 	     }
 	     
