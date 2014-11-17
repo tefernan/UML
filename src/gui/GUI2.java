@@ -15,12 +15,14 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
+import java.io.Console;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -50,6 +52,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.ComboBoxUI;
+import javax.swing.text.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -117,22 +120,23 @@ public class GUI2 {
 		paneles = new JTabbedPane();
 		
 		tabCodigo = new JPanel();
-		tabImagen = new JPanel();
-        ImageIcon iconoDiagrama = new ImageIcon("res/diagrama.png");
+		//tabImagen = new JPanel();
+        //ImageIcon iconoDiagrama = new ImageIcon("res/diagrama.png");
         ImageIcon iconoCodigo = new ImageIcon("res/codigo.png");
         
         //tabCodigo.setLayout(new BorderLayout());
         tabCodigo.setLayout(new GridBagLayout());
-        tabImagen.setLayout(new GridBagLayout());
+        //tabImagen.setLayout(new GridBagLayout());
         
         tabCodigo.setFocusable(false);
-        tabImagen.setFocusable(false);
+        //tabImagen.setFocusable(false);
         paneles.setFocusable(false);
         
         paneles.addTab("XML", iconoCodigo, tabCodigo, "Pestaña de codigo XML");
-        paneles.addTab("Diagrama", iconoDiagrama, tabImagen, "Pestaña de diagrama UML");
+        //paneles.addTab("Diagrama", iconoDiagrama, tabImagen, "Pestaña de diagrama UML");
         frame.add(paneles);
         
+        /*
         ChangeListener changeListener = new ChangeListener() {
         	public void stateChanged(ChangeEvent changeEvent) {
         		JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
@@ -159,12 +163,13 @@ public class GUI2 {
         };
         
         paneles.addChangeListener(changeListener);
-
+	*/
 	}
 	
 
 	private void cargarEditorTexto() {
-		texto = new JTextPane();
+		//texto = new JTextPane(resaltado());
+		texto = new JTextPane(sintaxis());
 		scroll = new JScrollPane(texto);
 		texto.setFont(new Font(Font.MONOSPACED, 0, 12));
 		
@@ -234,7 +239,7 @@ public class GUI2 {
 		bGuardar.setToolTipText("Guardar");
 		bGuardarComo.setToolTipText("Guardar Como");
 		bAbrir.setToolTipText("Abrir archivo");
-		bImagen.setToolTipText("Exportar imagen de diagrama");
+		bImagen.setToolTipText("Crear imagen");
 		
 		//Setea los margenes entre los botones
 		bGuardar.setMargin(new Insets(6,6,6,6));
@@ -302,6 +307,7 @@ public class GUI2 {
 					File archivo = null;
 					//Si acepta un archivo, lo carga en un stream
 					if(JFileChooser.APPROVE_OPTION == fc.showOpenDialog(null)){
+						/*
 			        	archivo= fc.getSelectedFile();
 			        	String ruta = archivo.getAbsolutePath();
 		        		FileReader lector = new FileReader(ruta);
@@ -312,6 +318,21 @@ public class GUI2 {
 		        		texto.setText(texto.getText().replace(" ", " ")); //reemplazar caracter raro (ascii 160)
 		        		br.close();
 		        		lector.close();
+		        		*/
+						archivo= fc.getSelectedFile();
+						String text = new Scanner(archivo).useDelimiter("\\A").next();
+						text = text.replace("Â", " ");
+						text = text.replace(" ", " ");
+						//System.out.println(text);
+						
+						javax.swing.text.Document doc = texto.getDocument();
+						try {
+							doc.remove(0, doc.getLength());
+							doc.insertString(0, text, null);
+						} catch (BadLocationException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 		        	
 					}else {
 						System.out.println("No selecciono archivo");
@@ -584,4 +605,284 @@ public class GUI2 {
 		}
 		
 	}
+	
+	private int nonCharIzquierda (String text, int index) {
+        while (--index >= 0) {
+            if (String.valueOf(text.charAt(index)).matches("\\W")) {
+                break;
+            }
+        }
+        return (index+1);
+    }
+	
+	private int nonCharDerecha (String text, int index) {
+        while (index < text.length()) {
+            if (String.valueOf(text.charAt(index)).matches("\\W")) {
+                break;
+            }
+            index++;
+        }
+        return index;
+    }
+	
+	private int indiceIzquierda (String text, int i) {
+		int index = i;
+        while (--index >= 0) {
+            if (String.valueOf(text.charAt(index)).matches("\\W")) {
+                break;
+            }
+        }
+        if(index < 0){
+        	return -1;
+        }
+        //index++;
+        /*
+        if(String.valueOf(text.charAt(index)).matches("\\W")){
+        	index = -1;
+        }
+        */
+        return index;
+    }
+	
+	private int indiceDerecha (String text, int i) {
+		int index = i - 1;
+        while (++index < text.length()) {
+            if (String.valueOf(text.charAt(index)).matches("\\W")) {
+                break;
+            }
+
+        }
+        if(index >= text.length()){
+        	return -1;
+        }
+        //index--;
+        /*
+        if(String.valueOf(text.charAt(index)).matches("\\W")){
+        	index = -1;
+        }
+        */
+        return index;
+    }
+	
+	
+	private int primerIndiceString(String str, int largo){
+		int index = -1;
+		for (int i=0; i<str.length(); i++){
+			if (String.valueOf(str.charAt(i)).matches("\\W")) {
+				index = i;
+                break;
+            }
+		}
+		if(index == -1)
+			return index;
+		else
+			return (index + largo);
+	}
+	private int ultimoIndiceString(String str, int largo){
+		int index = -1;
+		for (int i=str.length() -1; i>=0; i--){
+			if (String.valueOf(str.charAt(i)).matches("\\W")) {
+				index = i;
+                break;
+            }
+		}
+		if(index == -1)
+			return index;
+		else
+			return (index + largo);
+	}
+	
+	private DefaultStyledDocument sintaxis(){
+		StyleContext cont = StyleContext.getDefaultStyleContext();
+		final AttributeSet attrRed   = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.RED);
+		final AttributeSet attrBlack = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.BLACK);
+		final AttributeSet attrGreen = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.GREEN);
+		
+		DefaultStyledDocument doc = new DefaultStyledDocument() {
+			public void insertString (int offset, String str, AttributeSet a) throws BadLocationException {
+                super.insertString(offset, str, a);
+                
+                String text = getText(0, getLength());
+                int indexInteriorA = primerIndiceString(str, offset);
+                int indexInteriorB = ultimoIndiceString(str, offset);
+                int indexIzquierda = indiceIzquierda(text, offset);
+                int indexDerecha   = indiceDerecha(text, offset+str.length());
+                
+                
+                System.out.println(" ");
+                
+                System.out.println(indexIzquierda+"/"+indexInteriorA+"/"+indexInteriorB+"/"+indexDerecha);
+
+                
+                
+                //BORDE IZQUIERDO DEL INPUT---
+                if(indexIzquierda >= 0){
+                	if(indexInteriorA >= 0){
+                		String palabra = text.substring(indexIzquierda + 1, indexInteriorA);
+                		if (palabra.matches("(private|public|protected|id)"))
+                            setCharacterAttributes(indexIzquierda + 1, indexInteriorA, attrRed, false);
+                        else if(palabra.matches("(UseCaseDiagram)"))
+                        	setCharacterAttributes(indexIzquierda + 1, indexInteriorA, attrGreen, false);
+                        else
+                            setCharacterAttributes(indexIzquierda + 1, indexInteriorA, attrBlack, false);
+                	}
+                	else{
+                		if(indexDerecha >= 0){
+                			String palabra = text.substring(indexIzquierda + 1, indexDerecha);
+                    		if (palabra.matches("(private|public|protected|id)"))
+                                setCharacterAttributes(indexIzquierda + 1, indexDerecha, attrRed, false);
+                            else if(palabra.matches("(UseCaseDiagram)"))
+                            	setCharacterAttributes(indexIzquierda + 1, indexDerecha, attrGreen, false);
+                            else
+                                setCharacterAttributes(indexIzquierda + 1, indexDerecha, attrBlack, false);
+                		}
+                	}
+                }
+                else{
+                	if(indexInteriorA >= 0){
+                		String palabra = text.substring(0, indexInteriorA);
+                		if (palabra.matches("(private|public|protected|id)"))
+                            setCharacterAttributes(0, indexInteriorA, attrRed, false);
+                        else if(palabra.matches("(UseCaseDiagram)"))
+                        	setCharacterAttributes(0, indexInteriorA, attrGreen, false);
+                        else
+                            setCharacterAttributes(0, indexInteriorA, attrBlack, false);
+                	}
+                }
+                
+              //BORDE DERECHO DEL INPUT---
+                if(indexDerecha >= 0){
+                	if(indexInteriorB >= 0){
+                		String palabra = text.substring(indexInteriorB + 1, indexDerecha);
+                		if (palabra.matches("(private|public|protected|id)"))
+                            setCharacterAttributes(indexInteriorB + 1, indexDerecha, attrRed, false);
+                        else if(palabra.matches("(UseCaseDiagram)"))
+                        	setCharacterAttributes(indexInteriorB + 1, indexDerecha, attrGreen, false);
+                        else
+                            setCharacterAttributes(indexInteriorB + 1, indexDerecha, attrBlack, false);     		
+                	}
+                }
+                else{
+                	if(indexInteriorB >= 0){
+                		String palabra = text.substring(indexInteriorB + 1, text.length());
+                		if (palabra.matches("(private|public|protected|id)"))
+                            setCharacterAttributes(indexInteriorB + 1, text.length(), attrRed, false);
+                        else if(palabra.matches("(UseCaseDiagram)"))
+                        	setCharacterAttributes(indexInteriorB + 1, text.length(), attrGreen, false);
+                        else
+                            setCharacterAttributes(indexInteriorB + 1, text.length(), attrBlack, false);     		
+                	}
+                }
+
+        		
+                //System.out.println(str);
+			}
+		};
+		
+		return doc;
+	}
+	
+	private DefaultStyledDocument resaltado(){
+		
+		StyleContext cont = StyleContext.getDefaultStyleContext();
+		final AttributeSet attrRed   = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.RED);
+		final AttributeSet attrBlack = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.BLACK);
+		final AttributeSet attrGreen = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.GREEN);
+		
+		DefaultStyledDocument doc = new DefaultStyledDocument() {
+			
+			public void insertString (int offset, String str, AttributeSet a) throws BadLocationException {
+                super.insertString(offset, str, a);
+                
+                int largoStr = str.length();
+                System.out.println(str);
+                
+                /*
+                String text = getText(0, getLength());
+                int letraInicio = indiceIzquierda(text, offset);
+                if (letraInicio < 0) 
+                	letraInicio = 0;
+                int letraFinal = indiceDerecha(text, offset);
+                int letraActual = letraInicio;
+                
+                System.out.println(letraInicio + "-" + letraFinal);
+                
+                while(letraActual < letraFinal){
+                	if (letraActual == letraFinal || String.valueOf(text.charAt(letraActual)).matches("\\W")) {
+                		
+                		String palabra1 = text.substring(letraInicio, letraActual);
+                		String palabra2 = text.substring(letraActual + 1, letraFinal);
+                		
+                		System.out.println("-" + palabra1 + "-" + palabra2 + "-");
+                		
+                		if (palabra1.matches("(private|public|protected|id)"))
+                            setCharacterAttributes(letraInicio, letraActual, attrRed, false);
+                        else if(palabra1.matches("(UseCaseDiagram)"))
+                        	setCharacterAttributes(letraInicio, letraActual, attrGreen, false);
+                        else
+                            setCharacterAttributes(letraInicio, letraActual, attrBlack, false);
+                		
+                		if (palabra2.matches("(private|public|protected|id)"))
+                            setCharacterAttributes(letraActual, letraFinal, attrRed, false);
+                        else if(palabra2.matches("(UseCaseDiagram)"))
+                        	setCharacterAttributes(letraActual, letraFinal, attrGreen, false);
+                        else
+                            setCharacterAttributes(letraActual, letraFinal, attrBlack, false);
+                		break;
+                    }
+                	letraActual++;
+                }
+                */
+
+                
+                String text = getText(0, getLength());
+                int before = nonCharIzquierda(text, offset);
+                if (before < 0) 
+                	before = 0;
+                int after = nonCharDerecha(text, offset + str.length());
+                int wordL = before;
+                int wordR = before;
+
+                while (wordR <= after) {
+                    if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
+                    	String palabra = text.substring(wordL, wordR);
+                    	//System.out.println(palabra);
+                        if (palabra.matches("(private|public|protected|id|connection|usecase)"))
+                            setCharacterAttributes(wordL, wordR - wordL, attrRed, false);
+                        else if(palabra.matches("(UseCaseDiagram)"))
+                        	setCharacterAttributes(wordL, wordR - wordL, attrGreen, false);
+                        else
+                            setCharacterAttributes(wordL, wordR - wordL, attrBlack, false);
+                        wordL = wordR;
+                    }
+                    wordR++;
+                }
+                
+            }
+			
+			public void remove (int offs, int len) throws BadLocationException {
+				
+                super.remove(offs, len);
+
+                String text = getText(0, getLength());
+                int before = nonCharIzquierda(text, offs);
+                if (before < 0) before = 0;
+                int after = nonCharDerecha(text, offs);
+
+                String palabra = text.substring(before, after);
+                if (palabra.matches("(private|public|protected|id|connection|usecase)"))
+                	setCharacterAttributes(before, after - before, attrRed, false);
+                else if(palabra.matches("(UseCaseDiagram)"))
+                	setCharacterAttributes(before, after - before, attrGreen, false);
+                else
+                	setCharacterAttributes(before, after - before, attrBlack, false);
+                
+            }
+
+		};
+		
+		return doc;
+		
+	}
 }
+
