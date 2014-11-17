@@ -16,6 +16,10 @@ public class UsecaseCaso {
 	private int posx = 0;
 	private int posy = 0;
 	
+	//Ancho y Alto
+	private int ancho=173;
+	private int alto=127;
+	
 	//constructor
 	public UsecaseCaso(String id, String name) {
 		this.id = id;
@@ -73,5 +77,13 @@ public class UsecaseCaso {
 	}
 	public void setPosy(int posy) {
 		this.posy = posy;
+	}
+
+	public int getAncho() {
+		return ancho;
+	}
+
+	public int getAlto() {
+		return alto;
 	}
 }

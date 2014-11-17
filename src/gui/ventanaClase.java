@@ -109,8 +109,13 @@ public class ventanaClase {
 					int b = e.getY();
 					String c = JOptionPane.showInputDialog(frame,"Ingrese comentario","Soy un comentario",JOptionPane.QUESTION_MESSAGE);
 					if(c != null){
-						System.out.println(c);
 						uml.addComentario(new Comentario(c, a, b));
+						frame.remove(panelImagen);
+						frame.remove(scr2);
+						frame.repaint();
+						generarClase();
+						frame.setVisible(true);
+						
 					}
 					
 				}

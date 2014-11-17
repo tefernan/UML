@@ -151,6 +151,7 @@ public class ventanaCaso {
 			diag.CrearUsers();
 			diag.CrearCasos();
 			diag.CrearConexiones();
+			diag.CrearComentarios();
 			ImageIcon iconTab = diag.FinalizarIcon();
 			JLabel picLabel = new JLabel(iconTab);
 			scrollImagen = new JScrollPane(picLabel,
@@ -168,10 +169,14 @@ public class ventanaCaso {
 						int a = e.getX();
 						int b = e.getY();
 						String c = JOptionPane.showInputDialog(frame,"Ingrese comentario","Soy un comentario",JOptionPane.QUESTION_MESSAGE);
-						if(c != null){
-							System.out.println(c);
+						if(c != null)
+						{
 							uml.addComentario(new Comentario(c, a, b));
-							
+							frame.remove(panelImagen);
+							frame.remove(scr2);
+							frame.repaint();
+							generarCaso();
+							frame.setVisible(true);
 						}
 						
 					}
@@ -271,6 +276,7 @@ public class ventanaCaso {
 					diag.CrearUsers();
 					diag.CrearCasos();
 					diag.CrearConexiones();
+					diag.CrearComentarios();
 
 					JFileChooser fc = new JFileChooser();
 					fc.setSelectedFile(new File("diagramaCaso.png"));
