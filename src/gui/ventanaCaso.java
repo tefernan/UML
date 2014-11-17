@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -53,6 +54,10 @@ public class ventanaCaso {
 
 	private UsecaseCaso casoElegido;
 	private ActorCaso actorElegido;
+
+	
+	private JPanel panelImagen;
+	
 
 	private lectorXML lector;
 
@@ -106,7 +111,7 @@ public class ventanaCaso {
 		casoElegido = null;
 		actorElegido = null;
 
-		// BOTONES
+		//BOTONES
 		ImageIcon iconoGuardar = new ImageIcon("res/guardar.png");
 		ImageIcon iconoActualizar = new ImageIcon("res/actualizar.png");
 		JButton bGuardar = new JButton(iconoGuardar);
@@ -158,8 +163,12 @@ public class ventanaCaso {
 			};
 			// scrollImagen.addMouseListener(ma);
 			picLabel.addMouseListener(ma);
+			//----
+			panelImagen = new JPanel(new FlowLayout());
+			panelImagen.add(scrollImagen);
+			//----
 			
-			frame.add(scrollImagen, getGbc(GBC.IMAGEN));
+			frame.add(panelImagen,getGbc(GBC.IMAGEN));
 
 			listaCasos = uml.getListaCasos();
 			listaActores = uml.getListaActores();
@@ -272,8 +281,9 @@ public class ventanaCaso {
 			yAlto = Y + 127;
 			if ((X < A && A < xAncho) && (Y < B && B < yAlto)) {
 				selCaso = caso;
-				casoElegido=selCaso;
-				actorElegido=null;
+				casoElegido = selCaso;
+				actorElegido = null;
+
 				break;
 			}
 		}
@@ -285,8 +295,9 @@ public class ventanaCaso {
 				yAlto = Y + 150;
 				if ((X < A && A < xAncho) && (Y < B && B < yAlto)) {
 					selActor = actor;
-					actorElegido=selActor;
-					casoElegido=null;
+
+					actorElegido = selActor;
+					casoElegido = null;
 					break;
 				}
 			}
