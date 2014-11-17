@@ -236,9 +236,17 @@ public class UmlClase {
 	public void setNombreDiagrama(String nombreDiagrama) {
 		this.nombreDiagrama = nombreDiagrama;
 	}
+	
+	
 	public ArrayList<Clase> getListaClases() {
 		return listaClases;
 	}
+	
+	public void setListaClases(ArrayList<Clase> a){
+		this.listaClases=a;
+	}
+	
+	
 	public ArrayList<ConnectionClase> getListaConexiones() {
 		return listaConexiones;
 	}
