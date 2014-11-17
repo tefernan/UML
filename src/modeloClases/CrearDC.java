@@ -128,6 +128,9 @@ public class CrearDC {
 
 			// Pongo los metodos
 			CrearMetodos();
+			
+			// Creo las conexiones
+			CrearConexiones();
 
 		}
 
@@ -252,7 +255,7 @@ public class CrearDC {
 
 	}
 
-	public void CrearConexiones() throws IOException {
+	public void CrearConexiones(){
 
 		String a1, a2, tipo;
 		int p1 = 0, p2 = 0;
@@ -293,7 +296,7 @@ public class CrearDC {
 
 			
 			  //Conecto p1 por abajo y p2 por arriba 
-			if(y1<y2 && y1<y2 && y2>y1+clases.get(p1).getAlto()) { System.out.print("C");
+			if(y1<y2 && y1<y2 && y2>y1+clases.get(p1).getAlto()) {
 			  x1+=clases.get(p1).getAncho()/2; y1+=clases.get(p1).getAlto();
 			  x2+=clases.get(p2).getAncho()/2; }
 			  
@@ -303,7 +306,7 @@ public class CrearDC {
 			  y2+=clases.get(p2).getAlto(); }
 			  
 			  if(y2<y1 && y1<y2 && y2<y1+clases.get(p1).getAlto()) {
-			  System.out.print("hola"); }
+			  }
 			  
 			  //Conecto p1 por derecha y p2 por izquierda 
 			  if(x1<x2 && y1==y2) {

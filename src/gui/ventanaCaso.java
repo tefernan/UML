@@ -65,6 +65,8 @@ public class ventanaCaso {
 	private ArrayList<ActorCaso> listaActores = new ArrayList<ActorCaso>();
 	
 	JScrollPane scrollImagen=null;
+	
+	JScrollPane scr2=null;
 
 	public ventanaCaso(String t) {
 
@@ -168,10 +170,9 @@ public class ventanaCaso {
 			panelImagen.add(scrollImagen);
 			//----
 
-			JScrollPane scr2 = new JScrollPane(panelImagen, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+			scr2 = new JScrollPane(panelImagen, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 			frame.add(scr2,getGbc(GBC.IMAGEN));
 		
-
 
 			listaCasos = uml.getListaCasos();
 			listaActores = uml.getListaActores();
@@ -225,7 +226,8 @@ public class ventanaCaso {
 						
 					}
 					
-					frame.remove(scrollImagen);
+					frame.remove(panelImagen);
+					frame.remove(scr2);
 					frame.repaint();
 					generarCaso();
 					frame.setVisible(true);

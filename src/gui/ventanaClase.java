@@ -55,8 +55,11 @@ public class ventanaClase {
 	private JTextField posY;
 	
 	private JPanel panelImagen;
+	JScrollPane scrollImagen;
 	
 	private Clase claseElegida = null;
+	
+	JScrollPane scr2=null;
 	
 	private lectorXML lector;
 	
@@ -69,6 +72,9 @@ public class ventanaClase {
 		texto = t;
 		texto = texto.replace(" ", " ");
 		
+		uml = lector.leerXMLClase(texto);
+		uml.ordenarDiagramaClases();
+		
 		cargarHerramientas();
 		generarClase();
 		
@@ -76,21 +82,18 @@ public class ventanaClase {
 		frame.setVisible(true);
 	}
 	
-private void generarClase() {
+	private void generarClase() {
 		// TODO Auto-generated method stub
-	uml = lector.leerXMLClase(texto);
-	
-	uml.ordenarDiagramaClases();
+
 	
 	try{
 		CrearDC diag = new CrearDC(uml);
 		diag.CrearClase();
-		diag.CrearConexiones();
 		ImageIcon iconTab = diag.FinalizarIcon();
 		JLabel picLabel = new JLabel(iconTab);
 		
 		//JScrollPane scrollImagen = new JScrollPane(picLabel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		JScrollPane scrollImagen = new JScrollPane(picLabel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollImagen = new JScrollPane(picLabel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
 		MouseAdapter ma = new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -105,7 +108,7 @@ private void generarClase() {
 		panelImagen = new JPanel(new FlowLayout());
 		panelImagen.add(scrollImagen);
 		//----
-		JScrollPane scr2 = new JScrollPane(panelImagen, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scr2 = new JScrollPane(panelImagen, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
 		frame.add(scr2,getGbc(GBC.IMAGEN));
 		
@@ -181,7 +184,7 @@ private void generarClase() {
 	}
 
 	public void buscarCaja(int A, int B){
-		System.out.println(A+ " - "+B);
+		
 		Clase selClase = null;
 		int X = 0,  Y = 0;
 		int xAncho, yAlto;
@@ -190,7 +193,6 @@ private void generarClase() {
 			Y = clase.getPosy();
 			xAncho = X + clase.getAncho();
 			yAlto = Y + clase.getAlto();
-			System.out.println(X+"-"+xAncho+"---"+Y+"-"+yAlto);
 			if((X < A && A < xAncho) && (Y < B && B < yAlto)){
 				selClase = clase;
 				claseElegida = selClase;
@@ -208,8 +210,41 @@ private void generarClase() {
 	}
 
 	private ActionListener listenerBotonActualizar() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+
+				try {
+					if (claseElegida != null){
+						String nombre = claseElegida.getNombre();
+						int px = Integer.parseInt(posX.getText());
+						int py = Integer.parseInt(posY.getText());
+						for (int i=0; i<listaClases.size();i++) {
+							if (listaClases.get(i).getNombre().equals(nombre)) 
+							{
+								listaClases.get(i).setPosx(px);
+								listaClases.get(i).setPosy(py);
+								break;
+							}
+						}
+						uml.setListaClases(listaClases);
+					}				
+
+					frame.remove(panelImagen);
+					frame.remove(scr2);
+					frame.repaint();
+					generarClase();
+					frame.setVisible(true);
+					
+
+
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		};
 	}
 
 	private ActionListener listenerBotonGuardar() {
