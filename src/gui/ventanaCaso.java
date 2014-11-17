@@ -177,8 +177,8 @@ public class ventanaCaso {
 			panelImagen = new JPanel(new FlowLayout());
 			panelImagen.add(scrollImagen);
 			//----
-			
-			frame.add(panelImagen,getGbc(GBC.IMAGEN));
+			JScrollPane scr2 = new JScrollPane(panelImagen, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+			frame.add(scr2,getGbc(GBC.IMAGEN));
 			
 			listaCasos = uml.getListaCasos();
 			listaActores = uml.getListaActores();

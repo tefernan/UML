@@ -105,9 +105,9 @@ private void generarClase() {
 		panelImagen = new JPanel(new FlowLayout());
 		panelImagen.add(scrollImagen);
 		//----
+		JScrollPane scr2 = new JScrollPane(panelImagen, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
-		
-		frame.add(panelImagen,getGbc(GBC.IMAGEN));
+		frame.add(scr2,getGbc(GBC.IMAGEN));
 		
 		listaClases = uml.getListaClases();
 		
