@@ -1,7 +1,5 @@
 package modeloClases;
 
-
-
 import java.util.ArrayList;
 
 public class UmlClase {
@@ -116,6 +114,23 @@ public class UmlClase {
 		}	
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public String entregarClaseConMasConexiones(ArrayList<Clase> listaClase)
 	{
 		int contadorConexiones = 0;
@@ -150,6 +165,19 @@ public class UmlClase {
 		
 		return claseMasConexiones;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	public boolean sePuedeColocar(ArrayList<Clase> lista, int x, int y)
