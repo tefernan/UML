@@ -1,9 +1,10 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -18,21 +19,20 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.JToolBar;
+import javax.swing.border.Border;
 
-import modeloCasos.ActorCaso;
 import modeloCasos.CrearCaso;
-import modeloCasos.UmlCaso;
-import modeloCasos.UsecaseCaso;
+import modeloClases.Clase;
+import modeloClases.CrearDC;
+import modeloClases.UmlClase;
 
-public class ventanaCaso {
+public class ventanaClase {
 	
 	private enum GBC{
 		LABELCAJA, LABELX, LABELY,
@@ -45,29 +45,24 @@ public class ventanaCaso {
 	private String titulo;
 	private String texto;
 	
-	private UmlCaso uml;
+	private UmlClase uml;
 	
 	//Barra de herramientas
 	private JLabel cajaSeleccionada;
 	private JLabel labelX;
 	private JLabel labelY;
-	
 	private JTextField posX;
 	private JTextField posY;
 	
 	private JPanel panelImagen;
 	
-	private UsecaseCaso casoElegido;
-	private ActorCaso actorElegido;
+	private Clase claseElegida = null;
 	
 	private lectorXML lector;
 	
-	private ArrayList<UsecaseCaso> listaCasos = new ArrayList<UsecaseCaso>();
-	private ArrayList<ActorCaso> listaActores = new ArrayList<ActorCaso>();
+	private ArrayList<Clase> listaClases = new ArrayList<Clase>();
 	
-	
-	public ventanaCaso(String t){
-		
+	public ventanaClase(String t){
 		frame = new JFrame(titulo);
 		frame.setLayout(new GridBagLayout());
 		lector = new lectorXML();
@@ -75,25 +70,67 @@ public class ventanaCaso {
 		texto = texto.replace(" ", " ");
 		
 		cargarHerramientas();
-		generarCaso();
+		generarClase();
 		
 		frame.setSize(700, 500);
 		frame.setVisible(true);
 	}
 	
+private void generarClase() {
+		// TODO Auto-generated method stub
+	uml = lector.leerXMLClase(texto);
+	
+	uml.ordenarDiagramaClases();
+	
+	try{
+		CrearDC diag = new CrearDC(uml);
+		diag.CrearClase();
+		diag.CrearConexiones();
+		ImageIcon iconTab = diag.FinalizarIcon();
+		JLabel picLabel = new JLabel(iconTab);
+		
+		//JScrollPane scrollImagen = new JScrollPane(picLabel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		JScrollPane scrollImagen = new JScrollPane(picLabel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		MouseAdapter ma = new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				int a = e.getX();
+				int b = e.getY();
+				buscarCaja(a,b);
+			}
+		};
+		picLabel.addMouseListener(ma);
+
+		//----
+		panelImagen = new JPanel(new FlowLayout());
+		panelImagen.add(scrollImagen);
+		//----
+		
+		
+		frame.add(panelImagen,getGbc(GBC.IMAGEN));
+		
+		listaClases = uml.getListaClases();
+		
+	}catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+		
+	}
+
 	public void cargarHerramientas(){
 		
-		cajaSeleccionada = new JLabel("Caja: ");
+		cajaSeleccionada = new JLabel("Clase: ");
 		//cajaSeleccionada.setBackground(Color.BLUE);
 		//cajaSeleccionada.setSize(200, 500);
+		
+		
 		
 		labelX = new JLabel("Coordenada X: ");
 		labelY = new JLabel("Coordenada Y: ");
 		
 		posX = new JTextField(4);
 		posY = new JTextField(4);
-		
-		
 		KeyAdapter ka = new KeyAdapter() {
 			public void keyTyped(KeyEvent e){
 				char  c = e.getKeyChar();
@@ -106,8 +143,7 @@ public class ventanaCaso {
 		posY.addKeyListener(ka);
 		
 		
-		casoElegido = null;
-		actorElegido = null;
+		claseElegida = null;
 		
 		
 		//BOTONES
@@ -143,83 +179,60 @@ public class ventanaCaso {
 		
 		
 	}
-	
 
-	public void generarCaso(){
-
-		uml = lector.leerXMLCaso(texto);
+	public void buscarCaja(int A, int B){
+		System.out.println(A+ " - "+B);
+		Clase selClase = null;
+		int X = 0,  Y = 0;
+		int xAncho, yAlto;
+		for(Clase clase: listaClases){
+			X = clase.getPosx();
+			Y = clase.getPosy();
+			xAncho = X + clase.getAncho();
+			yAlto = Y + clase.getAlto();
+			System.out.println(X+"-"+xAncho+"---"+Y+"-"+yAlto);
+			if((X < A && A < xAncho) && (Y < B && B < yAlto)){
+				selClase = clase;
+				claseElegida = selClase;
+				break;
+			}
+		}
 		
-		uml.OrdenarActores();
-		uml.ordenarUserCases();
-		
-		
-		try {
-			CrearCaso diag = new CrearCaso(uml.getNombreDiagrama(), uml);
-			diag.CrearUsers();
-			diag.CrearCasos();
-			diag.CrearConexiones();
-			ImageIcon iconTab = diag.FinalizarIcon();
-			JLabel picLabel = new JLabel(iconTab);
-			JScrollPane scrollImagen = new JScrollPane(picLabel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-
-			MouseAdapter ma = new MouseAdapter() {
-				public void mouseClicked(MouseEvent e) {
-					int a = e.getX();
-					int b = e.getY();
-					buscarCaja(a,b);
-				}
-				
-				
-			};
-			//scrollImagen.addMouseListener(ma);
-			picLabel.addMouseListener(ma);
-			//----
-			panelImagen = new JPanel(new FlowLayout());
-			panelImagen.add(scrollImagen);
-			//----
-			
-			frame.add(panelImagen,getGbc(GBC.IMAGEN));
-			
-			listaCasos = uml.getListaCasos();
-			listaActores = uml.getListaActores();
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(selClase != null){
+			String id = selClase.getId();
+			id = selClase.getNombre();
+			cajaSeleccionada.setText("Caso: "+id);
+			posX.setText(Integer.toString(X));
+			posY.setText(Integer.toString(Y));
 		}
 	}
-	
-	
-	
+
 	private ActionListener listenerBotonActualizar() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	private ActionListener listenerBotonGuardar() {
-		// TODO Auto-generated method stub
-		
+	// TODO Auto-generated method stub
+	
 		return new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				
-				try {
-					CrearCaso diag = new CrearCaso(uml.getNombreDiagrama(), uml);
-					diag.CrearUsers();
-					diag.CrearCasos();
-					diag.CrearConexiones();
+				
+				try{
+					CrearDC diag = new CrearDC(uml);
+					diag.CrearClase();
 					
 					JFileChooser fc = new JFileChooser();
-					fc.setSelectedFile(new File("diagramaCaso.png"));
+					fc.setSelectedFile(new File("diagramaClases.png"));
 					if(JFileChooser.APPROVE_OPTION == fc.showSaveDialog(null)){
 						File ubicacion = fc.getSelectedFile();
 						diag.Finalizar(ubicacion);
 					}
 					
-					//diag.Finalizar();
-					
-				} catch (Exception e1) {
+				}catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -227,59 +240,7 @@ public class ventanaCaso {
 		};
 	}
 
-	public void buscarCaja(int A, int B){
-		System.out.println(A+ " - "+B);
-		UsecaseCaso selCaso = null;
-		ActorCaso selActor = null;
-		int X = 0,  Y = 0;
-		int xAncho, yAlto;
-		for(UsecaseCaso caso: listaCasos){
-			X = caso.getPosx();
-			Y = caso.getPosy();
-			xAncho = X + 173;
-			yAlto = Y + 127;
-			if((X < A && A < xAncho) && (Y < B && B < yAlto)){
-				selCaso = caso;
-				casoElegido = selCaso;
-				actorElegido = null;
-				break;
-			}
-		}
-		if(selCaso == null){
-			for(ActorCaso actor: listaActores){
-				X = actor.getPosx();
-				Y = actor.getPosy();
-				xAncho = X + 73;
-				yAlto = Y + 150;
-				if((X < A && A < xAncho) && (Y < B && B < yAlto)){
-					selActor = actor;
-					actorElegido = selActor;
-					casoElegido = null;
-					break;
-				}
-			}
-		}
-		if(selCaso != null){
-			String id = selCaso.getId();
-			id = selCaso.getName();
-			cajaSeleccionada.setText("Caso: "+id);
-			posX.setText(Integer.toString(X));
-			posY.setText(Integer.toString(Y));
-			
-		}
-		else{
-			if(selActor != null){
-				String id = selActor.getId();
-				id = selActor.getName();
-				cajaSeleccionada.setText("Actor: "+id);
-				posX.setText(Integer.toString(X));
-				posY.setText(Integer.toString(Y));
-			}
-		}
-		
-	}
-	
-	// metodo que retorna las posiciones de los elementos graficos
+
 	public GridBagConstraints getGbc(GBC tipo){
 		//El GBC que retornara
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -384,5 +345,5 @@ public class ventanaCaso {
 		gbc.insets = insets;
 		
 		return gbc;
-		}
+	}
 }

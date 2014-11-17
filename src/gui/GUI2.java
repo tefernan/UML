@@ -279,7 +279,8 @@ public class GUI2 {
 				
 				int index = opciones.getSelectedIndex();
 				if(index == 0){
-					generarDiagramaClase();
+					//generarDiagramaClase();
+					ventanaClase VC = new ventanaClase(texto.getText());
 				}
 				else if(index == 1){
 					ventanaCaso VC = new ventanaCaso(texto.getText());
