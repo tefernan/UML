@@ -1,5 +1,7 @@
 package modeloClases;
 
+import gui.Comentario;
+
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -20,6 +22,7 @@ public class CrearDC {
 	private BufferedImage bi;
 	private ArrayList<Clase> clases;
 	private ArrayList<ConnectionClase> conexiones;
+	private ArrayList<Comentario> comentarios;
 	private Font font;
 	private Graphics2D pone;
 	private Clase auxiliar;
@@ -34,6 +37,7 @@ public class CrearDC {
 		this.clases = u.getListaClases();
 		name = u.getNombreDiagrama();
 		this.conexiones = u.getListaConexiones();
+		this.comentarios=u.getListaComentarios();
 
 		// Auxiliares para crear dimensión imagen
 		int x = 0, y = 0;
@@ -50,7 +54,20 @@ public class CrearDC {
 			}
 
 		}
+		
+		for (Comentario c : comentarios) {
+			if (x < c.getPosX() + c.getAncho()) {
+				x = c.getPosX();
+				ancho = x + c.getAncho();
+			}
 
+			if (y < c.getPosY() + c.getAlto()) {
+				y = c.getPosY();
+				alto = y + c.getAlto();
+			}
+
+		}
+		
 		ancho += 20;
 		alto += 20;
 
@@ -131,6 +148,9 @@ public class CrearDC {
 			
 			// Creo las conexiones
 			CrearConexiones();
+			
+			//Crea los comentarios
+			CrearComentarios();
 
 		}
 
@@ -327,6 +347,58 @@ public class CrearDC {
 
 	}
 
+	public void CrearComentarios() {
+		
+		ArrayList<String> texto;
+		String del = "[ ]";
+		
+		for (int i = 0; i < comentarios.size(); i++) {
+			String a1 = "", a2 = "", aux = "";
+			texto = new ArrayList<String>();
+
+			String par[] = comentarios.get(i).getComentario().split(del);
+			
+
+			for (String a : par) {
+				if (aux.length() < 14) {
+					a2 = aux;
+					aux += a + " ";
+					a1 = a;
+
+					if (aux.length() > 14) {
+						texto.add(a2);
+						aux = a1 + " ";
+					}
+
+				}
+			}
+			texto.add(aux);
+			comentarios.get(i).setLineas(texto);
+		}
+		
+	
+		int ax=0,ay=0;
+		for (int i=0 ; i<comentarios.size();i++) 
+		{
+			
+			ArrayList<String> escribir= comentarios.get(i).getLineas();
+			pone.setColor(Color.YELLOW);
+			ax=comentarios.get(i).getPosX();
+			ay=comentarios.get(i).getPosY();
+			pone.fillRect(ax, ay,120,escribir.size()*20);
+			font = new Font("Serif", Font.PLAIN, 20);
+			pone.setColor(Color.BLACK);
+			
+			for(String b :escribir)
+			{
+				pone.drawString(b, ax+3, ay+17);
+				ay+=15;
+			}
+			
+		}
+	}
+
+	
 	public void Finalizar() throws IOException {
 		ImageIO.write(bi, "PNG", new File("DiagramaClases.PNG"));
 	}

@@ -16,14 +16,19 @@ public class ActorCaso {
 	private int posy = 0;
 	
 	//Ancho y alto
-	private int ancho;
-	private int alto;
-	
+	private int ancho=73;
+	private int alto=129;
+
 	//Constructor del actor
 	public ActorCaso(String type, String id, String name) {
 		this.type = type;
 		this.id = id;
 		this.name = name;
+		
+		if(name.length()*10>ancho)
+		{
+			ancho=name.length()*10;
+		}
 		
 		salen = new ArrayList<String>();
 	}
@@ -69,6 +74,14 @@ public class ActorCaso {
 	}
 	public void setPosy(int posy) {
 		this.posy = posy;
+	}
+
+	public int getAncho() {
+		return ancho;
+	}
+
+	public int getAlto() {
+		return alto;
 	}
 
 }
