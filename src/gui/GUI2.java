@@ -87,8 +87,6 @@ public class GUI2 {
 	//lector de xml
 	private lectorXML lector;
 
-	private Lienzo lnz;
-
 	public GUI2(String titulo){
 		//inicializamos ventana y menu
 		this.titulo = titulo;

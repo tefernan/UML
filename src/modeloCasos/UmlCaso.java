@@ -172,7 +172,6 @@ public class UmlCaso {
 			}//este for busca pone al primer CU "uc1" primero y después va avanzando en la lista "siguientes" que son con los que se conecta dicho CU.
 			
 		}
-		
 
 		
 		public ArrayList<String> LimpiarRepetidos(ArrayList<String> lista) //método que elimina elementos repetidos de una lista.
@@ -244,6 +243,14 @@ public class UmlCaso {
 		public ArrayList<UsecaseCaso> getListaCasos() {
 			return listaCasos;
 		}
+		
+		public void setListaActores(ArrayList<ActorCaso> a) {
+			this.listaActores=a;
+		}
+		public void setListaCasos(ArrayList<UsecaseCaso> a) {
+			this.listaCasos=a;
+		}
+		
 		public ArrayList<ConnectionCaso> getListaConexiones() {
 			return listaConexiones;
 		}
