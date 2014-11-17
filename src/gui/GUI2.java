@@ -107,7 +107,7 @@ public class GUI2 {
 		herramientas.setFloatable(false);
 		
 		frame.setSize(700, 500);
-		frame.setExtendedState(frame.MAXIMIZED_BOTH);  
+		//frame.setExtendedState(frame.MAXIMIZED_BOTH);  
 		frame.setVisible(true);
 	}
 

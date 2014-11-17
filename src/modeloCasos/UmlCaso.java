@@ -1,5 +1,7 @@
 package modeloCasos;
 
+import gui.Comentario;
+
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -12,6 +14,8 @@ public class UmlCaso {
 		private ArrayList<ActorCaso> listaActores = new ArrayList<ActorCaso>();
 		private ArrayList<UsecaseCaso> listaCasos = new ArrayList<UsecaseCaso>();
 		private ArrayList<ConnectionCaso> listaConexiones = new ArrayList<ConnectionCaso>();
+		
+		private ArrayList<Comentario> listaComentarios = new ArrayList<Comentario>();
 		
 		
 		public UmlCaso(){
@@ -228,6 +232,9 @@ public class UmlCaso {
 		public void addConexion(ConnectionCaso con){
 			listaConexiones.add(con);
 		}
+		public void addComentario(Comentario com){
+			listaComentarios.add(com);
+		}
 		
 		
 		//Getters y setters
@@ -254,6 +261,16 @@ public class UmlCaso {
 		public ArrayList<ConnectionCaso> getListaConexiones() {
 			return listaConexiones;
 		}
+
+
+		public ArrayList<Comentario> getListaComentarios() {
+			return listaComentarios;
+		}
+		public void setListaComentarios(ArrayList<Comentario> listaComentarios) {
+			this.listaComentarios = listaComentarios;
+		}
+		
+		
 
 	
 }

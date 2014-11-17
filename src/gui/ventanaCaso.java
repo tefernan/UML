@@ -22,10 +22,12 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 
 import modeloCasos.ActorCaso;
 import modeloCasos.CrearCaso;
@@ -155,9 +157,23 @@ public class ventanaCaso {
 
 			MouseAdapter ma = new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
-					int a = e.getX();
-					int b = e.getY();
-					buscarCaja(a, b);
+					if(SwingUtilities.isLeftMouseButton(e)){
+						int a = e.getX();
+						int b = e.getY();
+						buscarCaja(a, b);
+					}
+					else if(SwingUtilities.isRightMouseButton(e)){
+						int a = e.getX();
+						int b = e.getY();
+						String c = JOptionPane.showInputDialog(frame,"Ingrese comentario","Soy un comentario",JOptionPane.QUESTION_MESSAGE);
+						if(c != null){
+							System.out.println(c);
+							uml.addComentario(new Comentario(c, a, b));
+							
+						}
+						
+					}
+					
 				}
 
 			};

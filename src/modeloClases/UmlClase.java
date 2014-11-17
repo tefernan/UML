@@ -1,5 +1,7 @@
 package modeloClases;
 
+import gui.Comentario;
+
 import java.util.ArrayList;
 
 public class UmlClase {
@@ -7,6 +9,7 @@ public class UmlClase {
 	private String nombreDiagrama;
 	private ArrayList<Clase> listaClases;
 	private ArrayList<ConnectionClase> listaConexiones;
+	private ArrayList<Comentario> listaComentarios = new ArrayList<Comentario>();
 	
 	private int anchomax=0,altomax=0;
 	//private ArrayList<String> listaColocadosDC;
@@ -238,6 +241,18 @@ public class UmlClase {
 	}
 	public ArrayList<ConnectionClase> getListaConexiones() {
 		return listaConexiones;
+	}
+	
+	public void addComentario(Comentario com){
+		listaComentarios.add(com);
+	}
+
+	public ArrayList<Comentario> getListaComentarios() {
+		return listaComentarios;
+	}
+
+	public void setListaComentarios(ArrayList<Comentario> listaComentarios) {
+		this.listaComentarios = listaComentarios;
 	}
 
 }
