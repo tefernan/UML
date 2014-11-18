@@ -22,6 +22,7 @@ public class UmlClase {
 	
 	public void ordenarDiagramaClases()
 	{
+		
 		String primero = entregarClaseConMasConexiones(listaClases);
 		ArrayList<Clase> clasesAuxiliar = new ArrayList<Clase>();
 		
@@ -115,6 +116,7 @@ public class UmlClase {
 			c.setPosy(coordy_derecha);
 			coordy_derecha += altomax+30;
 		}	
+		
 	}
 	
 	

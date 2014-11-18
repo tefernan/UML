@@ -5,7 +5,6 @@ import gui.Comentario;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +12,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import modeloCasos.ConnectionCaso;
-import modeloCasos.UsecaseCaso;
 
 public class CrearDC {
 
@@ -40,30 +37,26 @@ public class CrearDC {
 		this.comentarios=u.getListaComentarios();
 
 		// Auxiliares para crear dimensión imagen
-		int x = 0, y = 0;
 		int ancho = 0, alto = 0;
+
 		for (Clase c : clases) {
-			if (x < c.getPosx() + c.getAncho()) {
-				x = c.getPosx();
-				ancho = x + c.getAncho();
+			if (ancho < c.getPosx() + c.getAncho()) {
+				ancho = c.getPosx() + c.getAncho();
 			}
 
-			if (y < c.getPosy() + c.getAlto()) {
-				y = c.getPosy();
-				alto = y + c.getAlto();
+			if (alto < c.getPosy() + c.getAlto()) {
+				alto = c.getPosy() + c.getAlto();
 			}
 
 		}
-		
+
 		for (Comentario c : comentarios) {
-			if (x < c.getPosX() + c.getAncho()) {
-				x = c.getPosX();
-				ancho = x + c.getAncho();
+			if (ancho < c.getPosX() + c.getAncho()) {
+				ancho = c.getPosX() + c.getAncho();
 			}
 
-			if (y < c.getPosY() + c.getAlto()) {
-				y = c.getPosY();
-				alto = y + c.getAlto();
+			if (alto < c.getPosY() + c.getAlto()) {
+				alto = c.getPosY() + c.getAlto();
 			}
 
 		}
