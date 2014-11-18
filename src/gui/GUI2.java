@@ -167,8 +167,8 @@ public class GUI2 {
 		text = text.replace(" ", " ");
 		int posA = pos - 1;
         while (posA >= 0) {
-        	System.out.println(posA);
-        	System.out.println(text.length());
+        	//System.out.println(posA);
+        	//System.out.println(text.length());
             if (String.valueOf(text.charAt(posA)).matches("<")) {
                 break;
             }
@@ -183,26 +183,27 @@ public class GUI2 {
         int posB = pos ;
         while (posB < text.length()) {
             if (String.valueOf(text.charAt(posB)).matches("\n")) {
-            	posB--;
+            	//posB--;
                 break;
             }
             posB++;
         }
         
         
-        System.out.println(posA + "/" + posB);
+        //System.out.println(posA + "/" + posB);
         if(posA >= 0 && posB >= 0){
         	String linea = text.substring(posA, posB);
         	
         	String lineaOriginal = linea;
         	linea = linea.replaceAll("\\s", "");
-        	System.out.println(linea);
-        	System.out.println(lineaOriginal);
+        	//System.out.println(linea);
+        	//System.out.println(lineaOriginal);
         	if(linea.length()>1){
         		String p1 = "att";
         		String p2 = "method";
         		String p3 = "param";
         		String p4 = "connection";
+        		String p5 = "ClassDiagram";
         		StyleContext cont = StyleContext.getDefaultStyleContext();
 				AttributeSet attrNegro = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.BLACK);
 				javax.swing.text.Document doc = texto.getDocument();
@@ -210,7 +211,7 @@ public class GUI2 {
         		if(p1.contains(linea)){
         			try {
         				doc.remove(posA, lineaOriginal.length());
-						doc.insertString(posA, "att name = \"\" type = \"\" visibility = \"\" />\n", attrNegro);
+						doc.insertString(posA, "att name = \"\" type = \"\" visibility = \"\" />", attrNegro);
 					} catch (BadLocationException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -228,7 +229,7 @@ public class GUI2 {
         		else if(p3.contains(linea)){
         			try {
         				doc.remove(posA, lineaOriginal.length());
-        				doc.insertString(posA, "param name = \"\" type = \"\" />\n", attrNegro);
+        				doc.insertString(posA, "param name = \"\" type = \"\" />", attrNegro);
 					} catch (BadLocationException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -237,7 +238,16 @@ public class GUI2 {
         		else if(p4.contains(linea)){
         			try {
         				doc.remove(posA, lineaOriginal.length());
-        				doc.insertString(posA, "connection type = \"\" from = \"\" to = \"\" />\n", attrNegro);
+        				doc.insertString(posA, "connection type = \"\" from = \"\" to = \"\" />", attrNegro);
+					} catch (BadLocationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+        		}
+        		else if(p5.contains(linea)){
+        			try {
+        				doc.remove(posA, lineaOriginal.length());
+        				doc.insertString(posA, "ClassDiagram name = \"\" >\n</ClassDiagram>", attrNegro);
 					} catch (BadLocationException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -252,6 +262,7 @@ public class GUI2 {
 		
 		int pos = texto.getCaretPosition();
 		String text = texto.getText();
+		text = text.replaceAll("\r", "");
 		text = text.replaceAll("\r", "");
 		int posA = pos - 1;
         while (posA >= 0) {
@@ -269,25 +280,26 @@ public class GUI2 {
         int posB = pos ;
         while (posB < text.length()) {
             if (String.valueOf(text.charAt(posB)).matches("\n")) {
-            	posB--;
+            	//posB--;
                 break;
             }
             posB++;
         }
         
         
-        System.out.println(posA + "/" + posB);
+        //System.out.println(posA + "/" + posB);
         if(posA >= 0 && posB >= 0){
         	String linea = text.substring(posA, posB);
         	
         	String lineaOriginal = linea;
         	linea = linea.replaceAll("\\s", "");
-        	System.out.println(linea);
-        	System.out.println(lineaOriginal);
+        	//System.out.println(linea);
+        	//System.out.println(lineaOriginal);
         	if(linea.length()>1){
         		String p1 = "actor";
         		String p2 = "usecase";
         		String p3 = "connection";
+        		String p4 = "UseCaseDiagram";
         		StyleContext cont = StyleContext.getDefaultStyleContext();
 				AttributeSet attrNegro = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.BLACK);
         		
@@ -295,7 +307,7 @@ public class GUI2 {
         			javax.swing.text.Document doc = texto.getDocument();
         			try {
         				doc.remove(posA, lineaOriginal.length());
-						doc.insertString(posA, "actor type = \"\" id = \"\" name = \"\" />\n", attrNegro);
+						doc.insertString(posA, "actor type = \"\" id = \"\" name = \"\" />", attrNegro);
 					} catch (BadLocationException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -305,7 +317,7 @@ public class GUI2 {
         			javax.swing.text.Document doc = texto.getDocument();
         			try {
         				doc.remove(posA, lineaOriginal.length());
-						doc.insertString(posA, "usecase id = \"\" name = \"\" />\n", attrNegro);
+						doc.insertString(posA, "usecase id = \"\" name = \"\" />", attrNegro);
 					} catch (BadLocationException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -315,7 +327,17 @@ public class GUI2 {
         			javax.swing.text.Document doc = texto.getDocument();
         			try {
         				doc.remove(posA, lineaOriginal.length());
-        				doc.insertString(posA, "connection type = \"\" from = \"\" to = \"\" />\n", attrNegro);
+        				doc.insertString(posA, "connection type = \"\" from = \"\" to = \"\" />", attrNegro);
+					} catch (BadLocationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+        		}
+        		else if(p4.contains(linea)){
+        			javax.swing.text.Document doc = texto.getDocument();
+        			try {
+        				doc.remove(posA, lineaOriginal.length());
+        				doc.insertString(posA, "UseCaseDiagram name = \"\" >\n</UseCaseDiagram>", attrNegro);
 					} catch (BadLocationException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -681,6 +703,8 @@ public class GUI2 {
 		};
 	}
 
+	/*
+	
 	public void generarDiagramaClase(){
 		String t = texto.getText();
 		t = t.replace(" ", " "); //reemplazar caracter raro (ascii 160)
@@ -818,27 +842,24 @@ public class GUI2 {
 		
 	}
 	
+	*/
 	
 	private DefaultStyledDocument sintaxis(){
 		StyleContext cont = StyleContext.getDefaultStyleContext();
 		final AttributeSet attrRed    = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.RED);
 		final AttributeSet attrBlack  = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.BLACK);
-		final AttributeSet attrGreen  = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.GREEN);
 		final AttributeSet attrBlue   = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.BLUE);
-		final AttributeSet attrPurple = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.MAGENTA);
-		
-		final AttributeSet attrMorado = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, new Color(119,50,50));
 		
 		DefaultStyledDocument doc = new DefaultStyledDocument() {
 			public void insertString (int offset, String str, AttributeSet a) throws BadLocationException {
-                super.insertString(offset, str, a);
+				
+				String asd = str.replaceAll("\r", "");
+				
+                super.insertString(offset, asd, a);
                 
                 String text = getText(0, getLength());
                 int largo = getLength();
                 setCharacterAttributes(0, largo, attrBlack, false);
-                
-                int pos;
-                String palabra;
                 
                 int index = opciones.getSelectedIndex();
 				if(index == 0){
@@ -896,9 +917,6 @@ public class GUI2 {
                 String text = getText(0, getLength());
                 int largo = getLength();
                 setCharacterAttributes(0, largo, attrBlack, false);
-                
-                int pos;
-                String palabra;
                 
                 int index = opciones.getSelectedIndex();
 				if(index == 0){
