@@ -21,7 +21,6 @@ public class Principal {
 
 		GUI2 gui = new GUI2("Editor de UML");
 		
-
 	}
 
 }
