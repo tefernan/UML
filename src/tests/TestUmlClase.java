@@ -14,29 +14,29 @@ public class TestUmlClase {
 
 	UmlClase u = new UmlClase();
 	
-	/*
+	
 	@Test
-	public void testOrdenarDiagramaClases() //REVISAR
+	public void testOrdenarDiagramaClases() 
 	{
 		Clase c1 = new Clase("prueba1", "id1");
 		ArrayList<String> salen1 = new ArrayList<String>();
-		salen1.add("c1");
+		salen1.add("id3");
 		c1.setSalen(salen1);
 		
 		Clase c2 = new Clase("prueba2", "id2");
 		ArrayList<String> salen2 = new ArrayList<String>();
-		salen2.add("c2");
-		salen2.add("c3");
+		salen2.add("id1");
+		salen2.add("id3");
 		c2.setSalen(salen2);
 		
 		Clase c3 = new Clase("prueba3", "id3");
 		ArrayList<String> salen3 = new ArrayList<String>();
-		salen3.add("c4");
+		salen3.add("id1");
 		c3.setSalen(salen3);
 		
 		Clase c4 = new Clase("prueba4", "id4");
 		ArrayList<String> salen4 = new ArrayList<String>();
-		salen4.add("c4");
+		salen4.add("id2");
 		c4.setSalen(salen4);
 		
 		ArrayList<Clase> listaClase = new ArrayList<Clase>();
@@ -48,10 +48,9 @@ public class TestUmlClase {
 		u.setListaClases(listaClase);
 		u.ordenarDiagramaClases();
 		
-		assertEquals(20, c4.getPosx());
-		assertEquals(50, c4.getPosy());
+		assertEquals(70, c1.getPosx());
+		assertEquals(50, c1.getPosy());
 	}
-	*/
 	
 	@Test
 	public void testEntregarClaseConMasConexiones() 
@@ -72,6 +71,52 @@ public class TestUmlClase {
 		listaClase.add(c2);
 		
 		assertEquals(c2.getId(), u.entregarClaseConMasConexiones(listaClase));
+	}
+	
+	@Test
+	public void testEntregarClasesOrdenadas()
+	{
+		Clase c1 = new Clase("prueba1", "id1");
+		ArrayList<String> salen1 = new ArrayList<String>();
+		salen1.add("id2");
+		c1.setSalen(salen1);
+		
+		Clase c2 = new Clase("prueba2", "id2");
+		ArrayList<String> salen2 = new ArrayList<String>();
+		salen2.add("id1");
+		c2.setSalen(salen2);
+		
+		Clase c3 = new Clase("prueba3", "id3");
+		ArrayList<String> salen3 = new ArrayList<String>();
+		c3.setSalen(salen3);
+		
+		ArrayList<Clase> prueba = new ArrayList<Clase>();
+		prueba.add(c3);
+		prueba.add(c1);
+		prueba.add(c2);
+		
+		ArrayList<Clase> esperado = new ArrayList<Clase>();
+		esperado.add(c1);
+		esperado.add(c2);
+		esperado.add(c3);
+		
+		assertEquals(esperado, u.entregarClasesOrdenadas(prueba));
+	}
+	
+	@Test
+	public void testObtenerMayorAlto()
+	{
+		Clase c1 = new Clase("prueba1", "id1");
+		c1.setAlto(20);
+		
+		Clase c2 = new Clase("prueba2", "id2");
+		c2.setAlto(10);
+		
+		ArrayList<Clase> prueba = new ArrayList<Clase>();
+		prueba.add(c1);
+		prueba.add(c2);
+		
+		assertEquals(20, u.obtenerMayorAlto(prueba));
 	}
 	
 	@Test

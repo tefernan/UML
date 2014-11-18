@@ -5,6 +5,7 @@ import gui.Comentario;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +13,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import modeloCasos.ConnectionCaso;
+import modeloCasos.UsecaseCaso;
 
 public class CrearDC {
 
@@ -38,9 +41,8 @@ public class CrearDC {
 
 		// Auxiliares para crear dimensión imagen
 		int ancho = 0, alto = 0;
-
 		for (Clase c : clases) {
-			if (ancho < c.getPosx() + c.getAncho()) {
+			if (ancho< c.getPosx() + c.getAncho()) {
 				ancho = c.getPosx() + c.getAncho();
 			}
 
@@ -49,7 +51,7 @@ public class CrearDC {
 			}
 
 		}
-
+		
 		for (Comentario c : comentarios) {
 			if (ancho < c.getPosX() + c.getAncho()) {
 				ancho = c.getPosX() + c.getAncho();
@@ -119,6 +121,7 @@ public class CrearDC {
 			alto = auxiliar.getAlto();
 			auxy = posy;
 
+			
 			// Creo el Rectangulo
 			pone.setColor(Color.BLACK);
 			pone.drawRect(posx, posy, ancho, alto);
@@ -239,12 +242,11 @@ public class CrearDC {
 			pone.drawLine(punto1.x, punto1.y, punto.x, punto.y);
 			// dibujar rombo
 
-			AffineTransform oa = pone.getTransform();
-			pone.rotate(Math.toRadians(ang), ancho, alto);
-
+			//AffineTransform oa = pone.getTransform();
+			//pone.rotate(Math.toRadians(ang), ancho, alto);
 			pone.setColor(Color.BLACK);
-			pone.fillRect(punto2.x, punto2.y, 10, 10);
-			pone.setTransform(oa);
+			pone.fillRect(punto2.x-5, punto2.y, 11, 11);
+			//pone.setTransform(oa);
 
 		}
 
@@ -256,13 +258,13 @@ public class CrearDC {
 			pone.drawLine(punto1.x, punto1.y, punto.x, punto.y);
 			// dibujar rombo
 
-			AffineTransform old = pone.getTransform();
-			pone.rotate(Math.toRadians(ang), ancho, alto);
+			//AffineTransform old = pone.getTransform();
+			//pone.rotate(Math.toRadians(ang), ancho, alto);
 
-			pone.drawRect(punto2.x, punto2.y, 10, 10);
+			pone.drawRect(punto2.x-5, punto2.y, 11, 11);
 			pone.setColor(Color.WHITE);
-			pone.fillRect(punto2.x, punto2.y, 10, 10);
-			pone.setTransform(old);
+			pone.fillRect(punto2.x-5, punto2.y, 10, 10);
+			//pone.setTransform(old);
 
 		}
 
