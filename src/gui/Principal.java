@@ -29,14 +29,11 @@ public class Principal {
 		GUI2 gui = new GUI2("Editor de UML");
 		
 		/*
-		String hola = "Hola que tal a todo el mun>do";
-		int a = hola.indexOf(" ");
-		int b = hola.lastIndexOf(">");
-		System.out.println(a + " - " + hola.charAt(a));
-		System.out.println(b + " - " + hola.charAt(b));
-		System.out.println(a);
+		String hola = "Hola que tal";
+		String b = hola.substring(5, 12);
 		System.out.println(b);
 		*/
+		
 	}
 
 }
