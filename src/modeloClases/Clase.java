@@ -138,6 +138,11 @@ public class Clase {
 	public ArrayList<String> getSalen() {
 		return salen;
 	}
+	
+	public void setSalen(ArrayList<String> salen) //nuevo
+	{
+		this.salen = salen;
+	}
 
 	public ArrayList<String> getEntran() {
 		return entran;

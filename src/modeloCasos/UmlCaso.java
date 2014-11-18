@@ -266,6 +266,7 @@ public class UmlCaso {
 		public ArrayList<Comentario> getListaComentarios() {
 			return listaComentarios;
 		}
+		
 		public void setListaComentarios(ArrayList<Comentario> listaComentarios) {
 			this.listaComentarios = listaComentarios;
 		}
